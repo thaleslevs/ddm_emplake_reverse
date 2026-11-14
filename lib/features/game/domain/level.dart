@@ -1,9 +1,5 @@
 import 'token.dart';
 
-/// Difficulty levels exactly as required by the assignment.
-///
-/// Note the inversion compared with the original game: the easiest level
-/// offers the most operators, and only it accepts non-integer division.
 enum Level {
   easy(
     allowsFractionalDivision: true,
@@ -21,23 +17,13 @@ enum Level {
     },
   ),
   intermediate(
-    operators: {
-      ..._basic,
-      TokenKind.sqrt,
-      TokenKind.cbrt,
-      TokenKind.factorial,
-      TokenKind.power,
-      ..._abs,
-    },
+    operators: {..._basic, TokenKind.sqrt, TokenKind.cbrt, TokenKind.factorial, TokenKind.power, ..._abs},
   ),
-  advanced(
-    operators: {..._basic, TokenKind.sqrt, TokenKind.factorial, ..._abs},
-  ),
+  advanced(operators: {..._basic, TokenKind.sqrt, TokenKind.factorial, ..._abs}),
   hard(operators: {..._basic, ..._abs});
 
   const Level({required this.operators, this.allowsFractionalDivision = false});
 
-  /// Operators available in the palette (the digits and `=` are always present).
   final Set<TokenKind> operators;
   final bool allowsFractionalDivision;
 

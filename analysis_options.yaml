@@ -10,6 +10,12 @@
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
+  errors:
+    # Flutter 3.47+ moved Material to package:material_ui, but firebase_ui_auth,
+    # flutter_math_fork, flex_color_scheme and curved_navigation_bar still build on
+    # package:flutter/material.dart. Mixing both breaks Theme and localizations,
+    # so the app stays on flutter/material until those packages migrate.
+    deprecated_member_use: ignore
   exclude:
     - build/**
     - web/**

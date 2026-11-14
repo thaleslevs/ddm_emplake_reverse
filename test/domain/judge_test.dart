@@ -36,20 +36,18 @@ List<Token> board(String source) {
 }
 
 List<int> digitsOf(List<Token> b) => [
-      for (final t in b)
-        if (t.kind == TokenKind.digit) t.value!,
-    ];
+  for (final t in b)
+    if (t.kind == TokenKind.digit) t.value!,
+];
 
 Verdict check(String source, {Level level = Level.easy, List<int>? digits}) {
   final b = board(source);
   return judge(b, digits: digits ?? digitsOf(b), level: level);
 }
 
-Matcher isCorrect(num value) =>
-    isA<Correct>().having((c) => c.value, 'value', closeTo(value, 1e-9));
+Matcher isCorrect(num value) => isA<Correct>().having((c) => c.value, 'value', closeTo(value, 1e-9));
 
-Matcher isInvalid<E extends EquationError>() =>
-    isA<Invalid>().having((v) => v.error, 'error', isA<E>());
+Matcher isInvalid<E extends EquationError>() => isA<Invalid>().having((v) => v.error, 'error', isA<E>());
 
 void main() {
   group('cases verified in the original game (browser)', () {
@@ -70,15 +68,29 @@ void main() {
   group('levels', () {
     test('operator sets match the assignment', () {
       expect(Level.easy.operators, containsAll([TokenKind.floorOpen, TokenKind.ceilOpen, TokenKind.cbrt]));
-      expect(Level.intermediate.operators,
-          containsAll([TokenKind.sqrt, TokenKind.cbrt, TokenKind.factorial, TokenKind.power, TokenKind.absOpen]));
+      expect(
+        Level.intermediate.operators,
+        containsAll([
+          TokenKind.sqrt,
+          TokenKind.cbrt,
+          TokenKind.factorial,
+          TokenKind.power,
+          TokenKind.absOpen,
+        ]),
+      );
       expect(Level.intermediate.operators, isNot(contains(TokenKind.floorOpen)));
       expect(Level.advanced.operators, containsAll([TokenKind.sqrt, TokenKind.factorial, TokenKind.absOpen]));
       expect(Level.advanced.operators, isNot(contains(TokenKind.cbrt)));
       expect(Level.advanced.operators, isNot(contains(TokenKind.power)));
       expect(Level.hard.operators, {
-        TokenKind.plus, TokenKind.minus, TokenKind.times, TokenKind.divide,
-        TokenKind.parenOpen, TokenKind.parenClose, TokenKind.absOpen, TokenKind.absClose,
+        TokenKind.plus,
+        TokenKind.minus,
+        TokenKind.times,
+        TokenKind.divide,
+        TokenKind.parenOpen,
+        TokenKind.parenClose,
+        TokenKind.absOpen,
+        TokenKind.absClose,
       });
     });
 
@@ -167,8 +179,8 @@ void main() {
       expect(equationToLatex(parseEquation(board('3 ! ** 2 = 6'))), r'{3!}^{2} = 6');
     });
     test('incomplete board still renders', () {
-      expect(boardToLatex(board('√ ( 8 + = 3 ** 1')), r'\surd ( 8 + = 3^{1}');
-      expect(boardToLatex(board('2 3')), '2 3');
+      expect(boardToLatex(board('√ ( 8 + = 3 ** 1')), r'\surd \; ( \; 8 \; + = 3^{1}');
+      expect(boardToLatex(board('2 3')), r'2 \; 3');
       expect(boardToLatex([]), '');
     });
   });

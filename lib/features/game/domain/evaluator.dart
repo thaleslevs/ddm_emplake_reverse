@@ -4,7 +4,6 @@ import 'errors.dart';
 import 'expression.dart';
 import 'level.dart';
 
-/// Evaluates an [Expr] with the rules of a [Level].
 class Evaluator {
   const Evaluator(this.level);
 
@@ -12,8 +11,6 @@ class Evaluator {
 
   static const maxFactorial = 20;
 
-  /// Results beyond this are rejected: doubles stop being exact integers
-  /// around 2^53, which would make equality checks meaningless.
   static const maxMagnitude = 1e15;
 
   static const _eps = 1e-9;
@@ -100,14 +97,9 @@ class Evaluator {
     };
   }
 
-  /// True when [x] is an integer up to floating-point noise
-  /// (e.g. `∛27` gives 3.0000000000000004).
   static bool isInteger(double x) => (x - x.roundToDouble()).abs() < _eps * math.max(1, x.abs());
 
-  /// Rounds values that are integers up to floating-point noise, so
-  /// `⌊∛27⌋` is 3 and not 2.
   static double snap(double x) => isInteger(x) ? x.roundToDouble() : x;
 
-  static bool areEqual(double a, double b) =>
-      (a - b).abs() <= _eps * math.max(1, math.max(a.abs(), b.abs()));
+  static bool areEqual(double a, double b) => (a - b).abs() <= _eps * math.max(1, math.max(a.abs(), b.abs()));
 }

@@ -5,32 +5,26 @@ import 'level.dart';
 import 'parser.dart';
 import 'token.dart';
 
-/// Outcome of checking the board.
 sealed class Verdict {
   const Verdict();
 }
 
-/// Both sides evaluate to the same [value].
 final class Correct extends Verdict {
   const Correct(this.value);
   final double value;
 }
 
-/// Valid equation, but the sides differ.
 final class Incorrect extends Verdict {
   const Incorrect(this.left, this.right);
   final double left;
   final double right;
 }
 
-/// The board cannot be evaluated.
 final class Invalid extends Verdict {
   const Invalid(this.error);
   final EquationError error;
 }
 
-/// Parses the board into an [Equation], validating structure only
-/// (no arithmetic). Throws [EquationError].
 Equation parseEquation(List<Token> tokens) {
   final equalsAt = <int>[
     for (var i = 0; i < tokens.length; i++)
@@ -48,7 +42,6 @@ Equation parseEquation(List<Token> tokens) {
   return Equation(left, right);
 }
 
-/// Checks the board against the puzzle [digits] and the [level] rules.
 Verdict judge(List<Token> tokens, {required List<int> digits, required Level level}) {
   try {
     for (var i = 0; i < tokens.length; i++) {

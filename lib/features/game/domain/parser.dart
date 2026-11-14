@@ -2,32 +2,15 @@ import 'errors.dart';
 import 'expression.dart';
 import 'token.dart';
 
-/// Recursive-descent parser for one side of the equation.
-///
-/// Grammar (highest precedence last):
-/// ```
-/// expr    := term (('+' | '−') term)*
-/// term    := unary (('×' | '÷') unary)*
-/// unary   := '−' unary | power
-/// power   := postfix ('**' unary)?        // right-associative
-/// postfix := prefix '!'*
-/// prefix  := ('√' | '∛') prefix | primary
-/// primary := digit | opener expr matching-closer
-/// ```
-/// So `√9!` is `(√9)!` and `−2**2` is `−(2**2)`; the LaTeX preview makes the
-/// grouping visible to the player.
 class SideParser {
   SideParser(this._tokens, {this.offset = 0});
 
   final List<Token> _tokens;
 
-  /// Index of `_tokens[0]` within the full board, so errors point at the
-  /// right piece.
   final int offset;
 
   int _pos = 0;
 
-  /// Parses the whole side or throws an [EquationError].
   Expr parse() {
     final expr = _expr();
     if (!_atEnd) throw _unexpectedAfterOperand();
@@ -131,9 +114,9 @@ class SideParser {
   }
 
   static GroupKind _groupKind(TokenKind opener) => switch (opener) {
-        TokenKind.absOpen => GroupKind.abs,
-        TokenKind.floorOpen => GroupKind.floor,
-        TokenKind.ceilOpen => GroupKind.ceil,
-        _ => GroupKind.paren,
-      };
+    TokenKind.absOpen => GroupKind.abs,
+    TokenKind.floorOpen => GroupKind.floor,
+    TokenKind.ceilOpen => GroupKind.ceil,
+    _ => GroupKind.paren,
+  };
 }

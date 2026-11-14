@@ -1,11 +1,6 @@
-/// Abstract syntax tree of one side of the equation.
-///
-/// Explicit grouping chosen by the player is kept as [Group] nodes so the
-/// LaTeX output reflects exactly what was built.
 sealed class Expr {
   const Expr(this.tokenIndex);
 
-  /// Index of the token that produced this node (for error highlighting).
   final int tokenIndex;
 }
 
@@ -55,7 +50,6 @@ final class Group extends Expr {
   final Expr inner;
 }
 
-/// A parsed `left = right`.
 class Equation {
   const Equation(this.left, this.right);
   final Expr left;
