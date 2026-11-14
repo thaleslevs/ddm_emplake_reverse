@@ -95,41 +95,36 @@ class _Card extends StatelessWidget {
         boxShadow: [BoxShadow(color: p.backgroundDeep, offset: const Offset(0, 4))],
       ),
       clipBehavior: Clip.antiAlias,
-      child: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(width: 6, color: accent),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(icon, color: accent, size: 22),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (title != null) ...[
-                            Text(title!.toUpperCase(), style: GameType.display(26, accent)),
-                            const SizedBox(height: 4),
-                          ],
-                          Text(message, style: text.bodyMedium!.copyWith(color: p.text)),
-                          if (extra != null) ...[
-                            const SizedBox(height: 8),
-                            SingleChildScrollView(scrollDirection: Axis.horizontal, child: extra),
-                          ],
-                        ],
-                      ),
-                    ),
-                  ],
+      child: Stack(
+        children: [
+          Positioned(left: 0, top: 0, bottom: 0, width: 6, child: ColoredBox(color: accent)),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 12, 14, 12),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(icon, color: accent, size: 22),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (title != null) ...[
+                        Text(title!.toUpperCase(), style: GameType.display(26, accent)),
+                        const SizedBox(height: 4),
+                      ],
+                      Text(message, style: text.bodyMedium!.copyWith(color: p.text)),
+                      if (extra != null) ...[
+                        const SizedBox(height: 8),
+                        SingleChildScrollView(scrollDirection: Axis.horizontal, child: extra),
+                      ],
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -25,8 +25,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get levelHard => 'Difícil';
 
   @override
-  String get gameInstructions =>
-      'Arraste as peças para formar uma igualdade verdadeira com os 4 dígitos.';
+  String get gameInstructions => 'Arraste as peças para formar uma igualdade verdadeira com os 4 dígitos.';
 
   @override
   String get gameRemoveHint =>
@@ -78,45 +77,37 @@ class AppLocalizationsPt extends AppLocalizations {
   String get errEmptyRight => 'Falta uma expressão à direita do =.';
 
   @override
-  String get errDigitsMismatch =>
-      'Os quatro dígitos precisam continuar na ordem original.';
+  String get errDigitsMismatch => 'Os quatro dígitos precisam continuar na ordem original.';
 
   @override
-  String get errOperatorNotAllowed =>
-      'Este operador não está disponível neste nível.';
+  String get errOperatorNotAllowed => 'Este operador não está disponível neste nível.';
 
   @override
-  String get errMissingOperator =>
-      'Falta um operador aqui. Os dígitos não se juntam: 2 3 não vira 23.';
+  String get errMissingOperator => 'Falta um operador aqui. Os dígitos não se juntam: 2 3 não vira 23.';
 
   @override
-  String get errMissingOperand =>
-      'Falta um número ou expressão perto deste operador.';
+  String get errMissingOperand => 'Falta um número ou expressão perto deste operador.';
 
   @override
   String get errUnclosedGroup => 'Este grupo foi aberto e não foi fechado.';
 
   @override
-  String get errUnexpectedCloser =>
-      'Este fechamento não combina com nenhuma abertura.';
+  String get errUnexpectedCloser => 'Este fechamento não combina com nenhuma abertura.';
 
   @override
-  String get errMisplacedFactorial =>
-      'O ! precisa vir logo depois de um número ou grupo.';
+  String get errMisplacedFactorial => 'O ! precisa vir logo depois de um número ou grupo.';
 
   @override
   String get errDivisionByZero => 'Não dá para dividir por zero.';
 
   @override
-  String get errNonIntegerDivision =>
-      'Neste nível, as divisões precisam dar um número inteiro.';
+  String get errNonIntegerDivision => 'Neste nível, as divisões precisam dar um número inteiro.';
 
   @override
   String get errNegativeSqrt => 'Não existe raiz quadrada de número negativo.';
 
   @override
-  String get errInvalidFactorial =>
-      'O fatorial só existe para inteiros não negativos.';
+  String get errInvalidFactorial => 'O fatorial só existe para inteiros não negativos.';
 
   @override
   String errFactorialTooLarge(int max) {
@@ -124,8 +115,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get errUndefinedResult =>
-      'Esta conta não resulta em um número válido.';
+  String get errUndefinedResult => 'Esta conta não resulta em um número válido.';
 
   @override
   String get opPlus => 'Soma';

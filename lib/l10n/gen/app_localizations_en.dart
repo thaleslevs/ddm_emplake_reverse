@@ -25,12 +25,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get levelHard => 'Hard';
 
   @override
-  String get gameInstructions =>
-      'Drag the pieces to build a true equality with the 4 digits.';
+  String get gameInstructions => 'Drag the pieces to build a true equality with the 4 digits.';
 
   @override
-  String get gameRemoveHint =>
-      'To remove a piece, drag it out of the expression or double-tap it.';
+  String get gameRemoveHint => 'To remove a piece, drag it out of the expression or double-tap it.';
 
   @override
   String get gameEqualsHolder => 'Drag the = into the expression';
@@ -78,45 +76,37 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errEmptyRight => 'Something is missing on the right of the =.';
 
   @override
-  String get errDigitsMismatch =>
-      'The four digits must stay in their original order.';
+  String get errDigitsMismatch => 'The four digits must stay in their original order.';
 
   @override
-  String get errOperatorNotAllowed =>
-      'This operator is not available at this level.';
+  String get errOperatorNotAllowed => 'This operator is not available at this level.';
 
   @override
-  String get errMissingOperator =>
-      'An operator is missing here. Digits don\'t join: 2 3 is not 23.';
+  String get errMissingOperator => 'An operator is missing here. Digits don\'t join: 2 3 is not 23.';
 
   @override
-  String get errMissingOperand =>
-      'A number or expression is missing next to this operator.';
+  String get errMissingOperand => 'A number or expression is missing next to this operator.';
 
   @override
   String get errUnclosedGroup => 'This group was opened but never closed.';
 
   @override
-  String get errUnexpectedCloser =>
-      'This closing piece doesn\'t match any opening.';
+  String get errUnexpectedCloser => 'This closing piece doesn\'t match any opening.';
 
   @override
-  String get errMisplacedFactorial =>
-      'The ! must come right after a number or group.';
+  String get errMisplacedFactorial => 'The ! must come right after a number or group.';
 
   @override
   String get errDivisionByZero => 'You can\'t divide by zero.';
 
   @override
-  String get errNonIntegerDivision =>
-      'At this level, divisions must result in a whole number.';
+  String get errNonIntegerDivision => 'At this level, divisions must result in a whole number.';
 
   @override
   String get errNegativeSqrt => 'Negative numbers have no square root.';
 
   @override
-  String get errInvalidFactorial =>
-      'Factorial only exists for non-negative integers.';
+  String get errInvalidFactorial => 'Factorial only exists for non-negative integers.';
 
   @override
   String errFactorialTooLarge(int max) {
@@ -124,8 +114,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get errUndefinedResult =>
-      'This calculation doesn\'t produce a valid number.';
+  String get errUndefinedResult => 'This calculation doesn\'t produce a valid number.';
 
   @override
   String get opPlus => 'Addition';

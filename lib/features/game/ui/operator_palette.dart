@@ -108,6 +108,8 @@ class _PaletteButtonState extends State<_PaletteButton> {
         data: NewPiece(widget.kind),
         dragAnchorStrategy: pointerDragAnchorStrategy,
         feedback: dragFeedback(widget.kind, widget.size),
+        onDragStarted: () => setState(() => _hovered = false),
+        onDragEnd: (_) => setState(() => _hovered = false),
         childWhenDragging: Opacity(
           opacity: 0.4,
           child: PieceTile(kind: widget.kind, size: widget.size),

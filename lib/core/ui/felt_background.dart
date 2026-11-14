@@ -5,6 +5,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 import '../theme/game_palette.dart';
+import 'contour_pattern.dart';
 
 class FeltBackground extends StatelessWidget {
   const FeltBackground({super.key, required this.child});
@@ -26,6 +27,9 @@ class FeltBackground extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
+          RepaintBoundary(
+            child: ContourPattern(style: p.pattern, color: p.patternColor),
+          ),
           const Positioned.fill(
             child: RepaintBoundary(child: CustomPaint(painter: _GrainPainter())),
           ),

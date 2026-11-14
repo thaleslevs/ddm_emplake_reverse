@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 enum ThemeVariant { felt, cosmic, minimal }
 
+enum PatternStyle { none, lines, flames }
+
 @immutable
 class GamePalette extends ThemeExtension<GamePalette> {
   const GamePalette({
@@ -25,6 +27,8 @@ class GamePalette extends ThemeExtension<GamePalette> {
     required this.equalsFace,
     required this.equalsEdge,
     required this.ink,
+    required this.pattern,
+    required this.patternColor,
   });
 
   final Color background;
@@ -47,6 +51,8 @@ class GamePalette extends ThemeExtension<GamePalette> {
   final Color equalsFace;
   final Color equalsEdge;
   final Color ink;
+  final PatternStyle pattern;
+  final Color patternColor;
 
   static const felt = GamePalette(
     background: Color(0xFF163328),
@@ -69,6 +75,8 @@ class GamePalette extends ThemeExtension<GamePalette> {
     equalsFace: Color(0xFFD94B43),
     equalsEdge: Color(0xFF8E2A25),
     ink: Color(0xFF1C1F26),
+    pattern: PatternStyle.lines,
+    patternColor: Color(0xFFB9D8C2),
   );
 
   static const cosmic = GamePalette(
@@ -92,6 +100,8 @@ class GamePalette extends ThemeExtension<GamePalette> {
     equalsFace: Color(0xFFE0544B),
     equalsEdge: Color(0xFF8C2C27),
     ink: Color(0xFF1A1730),
+    pattern: PatternStyle.flames,
+    patternColor: Color(0xFF6E45D6),
   );
 
   static const minimal = GamePalette(
@@ -115,6 +125,8 @@ class GamePalette extends ThemeExtension<GamePalette> {
     equalsFace: Color(0xFFC9483F),
     equalsEdge: Color(0xFF7E2A24),
     ink: Color(0xFF15171B),
+    pattern: PatternStyle.none,
+    patternColor: Color(0x00000000),
   );
 
   static GamePalette of(BuildContext context) => Theme.of(context).extension<GamePalette>()!;
@@ -153,6 +165,8 @@ class GamePalette extends ThemeExtension<GamePalette> {
       equalsFace: l(equalsFace, other.equalsFace),
       equalsEdge: l(equalsEdge, other.equalsEdge),
       ink: l(ink, other.ink),
+      pattern: t < 0.5 ? pattern : other.pattern,
+      patternColor: l(patternColor, other.patternColor),
     );
   }
 }
