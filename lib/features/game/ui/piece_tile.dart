@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/game_palette.dart';
 import '../domain/token.dart';
 
 class PieceTile extends StatelessWidget {
@@ -10,60 +12,62 @@ class PieceTile extends StatelessWidget {
     this.size = 52,
     this.highlightError = false,
     this.lifted = false,
+    this.hovered = false,
   });
 
   final TokenKind kind;
   final int? digit;
   final double size;
   final bool highlightError;
-
   final bool lifted;
+  final bool hovered;
 
   bool get _isDigit => kind == TokenKind.digit;
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final background = switch (kind) {
-      TokenKind.digit => scheme.surfaceContainerHighest,
-      TokenKind.equals => scheme.tertiaryContainer,
-      _ => scheme.primaryContainer,
-    };
-    final foreground = switch (kind) {
-      TokenKind.digit => scheme.onSurface,
-      TokenKind.equals => scheme.onTertiaryContainer,
-      _ => scheme.onPrimaryContainer,
+    final p = GamePalette.of(context);
+    final (face, edge, ink) = switch (kind) {
+      TokenKind.digit => (p.tileFace, p.tileEdge, p.tileInk),
+      TokenKind.equals => (p.equalsFace, p.equalsEdge, p.text),
+      _ => (p.operatorFace, p.operatorEdge, p.text),
     };
     final label = _isDigit ? '$digit' : kind.symbol;
-    final fontScale = label.length > 1 ? 0.36 : (_isDigit ? 0.56 : 0.48);
+    final fontScale = label.length > 1 ? 0.34 : (_isDigit ? 0.5 : 0.44);
+    final depth = (size * 0.08).roundToDouble().clamp(2.0, 5.0);
+    final border = highlightError
+        ? p.red
+        : hovered
+        ? p.blue
+        : Color.lerp(edge, p.backgroundDeep, 0.4)!;
 
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 180),
+      duration: const Duration(milliseconds: 120),
       curve: Curves.easeOut,
-      width: _isDigit ? size * 0.8 : size,
+      width: _isDigit ? size * 0.82 : size,
       height: size,
-      alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: background,
-        borderRadius: BorderRadius.circular(size * 0.22),
-        border: Border.all(color: highlightError ? scheme.error : Colors.transparent, width: 2.5),
+        color: edge,
+        borderRadius: BorderRadius.circular(size * 0.14),
+        border: Border.all(color: border, width: highlightError || hovered ? 2 : 1),
         boxShadow: [
           BoxShadow(
-            color: scheme.shadow.withValues(alpha: lifted ? 0.30 : 0.12),
-            blurRadius: lifted ? 14 : 3,
-            offset: Offset(0, lifted ? 6 : 1.5),
+            color: Colors.black.withValues(alpha: lifted ? 0.45 : 0.3),
+            blurRadius: lifted ? 12 : 0,
+            offset: Offset(0, lifted ? 8 : 2),
           ),
         ],
       ),
-      child: Text(
-        label,
-        maxLines: 1,
-        textScaler: TextScaler.noScaling,
-        style: TextStyle(
-          color: foreground,
-          fontSize: size * fontScale,
-          fontWeight: _isDigit ? FontWeight.w700 : FontWeight.w600,
-          height: 1,
+      padding: EdgeInsets.only(bottom: depth),
+      child: DecoratedBox(
+        decoration: BoxDecoration(color: face, borderRadius: BorderRadius.circular(size * 0.12)),
+        child: Center(
+          child: Text(
+            label,
+            maxLines: 1,
+            textScaler: TextScaler.noScaling,
+            style: GameType.tile(size * fontScale, ink),
+          ),
         ),
       ),
     );

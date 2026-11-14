@@ -3,6 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/game_palette.dart';
+import '../../../core/ui/felt_background.dart';
+import '../../../core/ui/game_controls.dart';
 import '../../../l10n/gen/app_localizations.dart';
 import '../domain/judge.dart';
 import '../domain/latex.dart';
@@ -82,143 +86,107 @@ class _GamePageState extends ConsumerState<GamePage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final p = GamePalette.of(context);
     final state = ref.watch(gameControllerProvider(_level));
     final busy = _flights.isNotEmpty;
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.appTitle), centerTitle: true),
-      body: Stack(
-        key: _stackKey,
-        children: [
-          LayoutBuilder(
-            builder: (context, constraints) {
-              final wide = constraints.maxWidth >= 720;
-              final pieceSize = wide ? 56.0 : 46.0;
-              return SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: wide ? 32 : 16, vertical: 20),
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 960),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        _LevelSelector(
-                          level: _level,
-                          onChanged: busy ? null : (level) => setState(() => _level = level),
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          l10n.gameInstructions,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        const SizedBox(height: 16),
-                        ExpressionBoard(key: ValueKey(_level), level: _level, keys: _keys),
-                        const SizedBox(height: 12),
-                        LatexPreview(latex: boardToLatex(state.board), emptyText: l10n.gamePreviewEmpty),
-                        const SizedBox(height: 20),
-                        Center(
-                          child: EqualsHolder(placed: state.equalsPlaced, keys: _keys, size: pieceSize),
-                        ),
-                        const SizedBox(height: 16),
-                        OperatorPalette(level: _level, keys: _keys, size: pieceSize),
-                        const SizedBox(height: 8),
-                        Text(
-                          l10n.gameRemoveHint,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                        const SizedBox(height: 20),
-                        _Actions(
-                          canClear: state.hasOperators && !busy,
-                          canCheck: state.hasOperators && !busy,
-                          canSkip: !busy,
-                          onClear: _controller.clearOperators,
-                          onSkip: _controller.skip,
-                          onCheck: _check,
-                        ),
-                        const SizedBox(height: 16),
-                        VerdictBanner(verdict: state.verdict, solved: state.solved),
-                      ],
+      body: FeltBackground(
+        child: Stack(
+          key: _stackKey,
+          fit: StackFit.expand,
+          children: [
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final wide = constraints.maxWidth >= 720;
+                final content = constraints.maxWidth.clamp(0.0, 920.0) - (wide ? 64 : 32);
+                final pieceSize = ((content - 24) / 9.9).clamp(30.0, 56.0);
+                return SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(horizontal: wide ? 32 : 16, vertical: wide ? 28 : 16),
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 920),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: IconButton(
+                              tooltip: ref.watch(themeVariantProvider).name,
+                              onPressed: ref.read(themeVariantProvider.notifier).next,
+                              icon: Icon(Icons.palette_outlined, color: p.textMuted),
+                            ),
+                          ),
+                          GameTitle(l10n.appTitle),
+                          SizedBox(height: wide ? 28 : 20),
+                          GameTabs<Level>(
+                            values: Level.values,
+                            selected: _level,
+                            label: l10n.levelName,
+                            onSelected: busy ? null : (level) => setState(() => _level = level),
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            l10n.gameInstructions,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: p.textMuted),
+                          ),
+                          const SizedBox(height: 20),
+                          ExpressionBoard(key: ValueKey(_level), level: _level, keys: _keys),
+                          const SizedBox(height: 12),
+                          LatexPreview(latex: boardToLatex(state.board), emptyText: l10n.gamePreviewEmpty),
+                          const SizedBox(height: 16),
+                          Center(
+                            child: EqualsHolder(placed: state.equalsPlaced, keys: _keys, size: pieceSize),
+                          ),
+                          const SizedBox(height: 16),
+                          OperatorPalette(level: _level, keys: _keys, size: pieceSize),
+                          const SizedBox(height: 12),
+                          Text(
+                            l10n.gameRemoveHint,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodySmall!.copyWith(color: p.textMuted),
+                          ),
+                          const SizedBox(height: 24),
+                          Wrap(
+                            alignment: WrapAlignment.center,
+                            spacing: 12,
+                            runSpacing: 12,
+                            children: [
+                              GameButton(
+                                label: l10n.gameSkip,
+                                icon: Icons.skip_next_rounded,
+                                kind: GameButtonKind.secondary,
+                                onPressed: busy ? null : _controller.skip,
+                              ),
+                              GameButton(
+                                label: l10n.gameClear,
+                                icon: Icons.backspace_outlined,
+                                onPressed: state.hasOperators && !busy ? _controller.clearOperators : null,
+                              ),
+                              GameButton(
+                                label: l10n.gameCheck,
+                                icon: Icons.check_rounded,
+                                kind: GameButtonKind.primary,
+                                onPressed: state.hasOperators && !busy ? _check : null,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          VerdictBanner(verdict: state.verdict, solved: state.solved),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
-          ),
-          Positioned.fill(
-            child: FlightLayer(flights: _flights, stackKey: _stackKey),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _LevelSelector extends StatelessWidget {
-  const _LevelSelector({required this.level, required this.onChanged});
-
-  final Level level;
-  final ValueChanged<Level>? onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    return Center(
-      child: FittedBox(
-        fit: BoxFit.scaleDown,
-        child: SegmentedButton<Level>(
-          segments: [for (final l in Level.values) ButtonSegment(value: l, label: Text(l10n.levelName(l)))],
-          selected: {level},
-          showSelectedIcon: false,
-          onSelectionChanged: onChanged == null ? null : (s) => onChanged!(s.single),
+                );
+              },
+            ),
+            Positioned.fill(
+              child: FlightLayer(flights: _flights, stackKey: _stackKey),
+            ),
+          ],
         ),
       ),
-    );
-  }
-}
-
-class _Actions extends StatelessWidget {
-  const _Actions({
-    required this.canClear,
-    required this.canCheck,
-    required this.canSkip,
-    required this.onClear,
-    required this.onSkip,
-    required this.onCheck,
-  });
-
-  final bool canClear;
-  final bool canCheck;
-  final bool canSkip;
-  final VoidCallback onClear;
-  final VoidCallback onSkip;
-  final VoidCallback onCheck;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    return Wrap(
-      alignment: WrapAlignment.center,
-      spacing: 12,
-      runSpacing: 12,
-      children: [
-        TextButton.icon(
-          onPressed: canSkip ? onSkip : null,
-          icon: const Icon(Icons.skip_next_rounded),
-          label: Text(l10n.gameSkip),
-        ),
-        OutlinedButton.icon(
-          onPressed: canClear ? onClear : null,
-          icon: const Icon(Icons.cleaning_services_rounded),
-          label: Text(l10n.gameClear),
-        ),
-        FilledButton.icon(
-          onPressed: canCheck ? onCheck : null,
-          icon: const Icon(Icons.check_rounded),
-          label: Text(l10n.gameCheck),
-        ),
-      ],
     );
   }
 }

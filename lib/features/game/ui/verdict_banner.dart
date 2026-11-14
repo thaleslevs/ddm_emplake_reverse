@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 
+import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/game_palette.dart';
 import '../../../l10n/gen/app_localizations.dart';
 import '../domain/judge.dart';
 import '../state/game_controller.dart';
@@ -15,50 +17,46 @@ class VerdictBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final scheme = Theme.of(context).colorScheme;
-    final text = Theme.of(context).textTheme;
+    final p = GamePalette.of(context);
 
     final Widget? content = switch ((verdict, solved)) {
       (_, final SolvedInfo s) => _Card(
         key: ValueKey('solved-${s.number}'),
-        color: scheme.tertiaryContainer,
-        onColor: scheme.onTertiaryContainer,
-        icon: Icons.check_circle_rounded,
+        accent: p.gold,
+        icon: Icons.check_rounded,
         title: l10n.solvedTitle,
         message: l10n.verdictCorrect(l10n.formatValue(s.value)),
         extra: Math.tex(
           s.latex,
-          textStyle: text.titleMedium!.copyWith(color: scheme.onTertiaryContainer),
+          textStyle: TextStyle(color: p.text, fontSize: 18),
           onErrorFallback: (_) => const SizedBox.shrink(),
         ),
       ),
       (Incorrect(:final left, :final right), _) => _Card(
         key: ValueKey('incorrect-${identityHashCode(verdict)}'),
-        color: scheme.secondaryContainer,
-        onColor: scheme.onSecondaryContainer,
+        accent: p.blue,
         icon: Icons.balance_rounded,
         message: l10n.verdictIncorrect(l10n.formatValue(left), l10n.formatValue(right)),
       ),
       (Invalid(:final error), _) => _Card(
         key: ValueKey('invalid-${identityHashCode(verdict)}'),
-        color: scheme.errorContainer,
-        onColor: scheme.onErrorContainer,
-        icon: Icons.error_outline_rounded,
+        accent: p.red,
+        icon: Icons.close_rounded,
         message: l10n.errorMessage(error),
       ),
       _ => null,
     };
 
     return AnimatedSize(
-      duration: const Duration(milliseconds: 220),
-      curve: Curves.easeOutCubic,
+      duration: const Duration(milliseconds: 140),
+      curve: Curves.easeOut,
       alignment: Alignment.topCenter,
       child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 220),
+        duration: const Duration(milliseconds: 140),
         transitionBuilder: (child, animation) => FadeTransition(
           opacity: animation,
           child: SlideTransition(
-            position: Tween(begin: const Offset(0, -0.15), end: Offset.zero).animate(animation),
+            position: Tween(begin: const Offset(0, -0.08), end: Offset.zero).animate(animation),
             child: child,
           ),
         ),
@@ -71,16 +69,14 @@ class VerdictBanner extends StatelessWidget {
 class _Card extends StatelessWidget {
   const _Card({
     super.key,
-    required this.color,
-    required this.onColor,
+    required this.accent,
     required this.icon,
     required this.message,
     this.title,
     this.extra,
   });
 
-  final Color color;
-  final Color onColor;
+  final Color accent;
   final IconData icon;
   final String message;
   final String? title;
@@ -88,34 +84,52 @@ class _Card extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = GamePalette.of(context);
     final text = Theme.of(context).textTheme;
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(16)),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, color: onColor),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (title != null)
-                  Text(
-                    title!,
-                    style: text.titleMedium!.copyWith(color: onColor, fontWeight: FontWeight.w700),
-                  ),
-                Text(message, style: text.bodyMedium!.copyWith(color: onColor)),
-                if (extra != null) ...[
-                  const SizedBox(height: 6),
-                  SingleChildScrollView(scrollDirection: Axis.horizontal, child: extra),
-                ],
-              ],
+      decoration: BoxDecoration(
+        color: p.panel,
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: p.border, width: 1.5),
+        boxShadow: [BoxShadow(color: p.backgroundDeep, offset: const Offset(0, 4))],
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(width: 6, color: accent),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(icon, color: accent, size: 22),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (title != null) ...[
+                            Text(title!.toUpperCase(), style: GameType.display(26, accent)),
+                            const SizedBox(height: 4),
+                          ],
+                          Text(message, style: text.bodyMedium!.copyWith(color: p.text)),
+                          if (extra != null) ...[
+                            const SizedBox(height: 8),
+                            SingleChildScrollView(scrollDirection: Axis.horizontal, child: extra),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

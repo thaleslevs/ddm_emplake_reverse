@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/theme/game_palette.dart';
 import '../domain/judge.dart';
 import '../domain/level.dart';
 import '../domain/token.dart';
@@ -68,7 +69,7 @@ class _ExpressionBoardState extends ConsumerState<ExpressionBoard> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final slots = visible.length + (_hoverIndex != null ? 1 : 0) + 0.5;
-        final tile = ((constraints.maxWidth - 24) / (slots * 1.08)).clamp(26.0, 56.0);
+        final tile = ((constraints.maxWidth - 28) / (slots * 1.08)).clamp(26.0, 64.0);
         final spacing = tile * 0.08;
 
         return DragTarget<PiecePayload>(
@@ -81,20 +82,22 @@ class _ExpressionBoardState extends ConsumerState<ExpressionBoard> {
             _accept(details.data, index);
           },
           builder: (context, candidates, _) {
-            final scheme = Theme.of(context).colorScheme;
+            final p = GamePalette.of(context);
+            final active = candidates.isNotEmpty;
             return AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              constraints: BoxConstraints(minHeight: tile + 32, minWidth: double.infinity),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+              duration: const Duration(milliseconds: 120),
+              constraints: BoxConstraints(minHeight: tile + 40, minWidth: double.infinity),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
               decoration: BoxDecoration(
-                color: candidates.isNotEmpty
-                    ? scheme.primaryContainer.withValues(alpha: 0.25)
-                    : scheme.surfaceContainerLow,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: candidates.isNotEmpty ? scheme.primary : scheme.outlineVariant,
-                  width: candidates.isNotEmpty ? 2 : 1,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: active ? p.blue : p.borderStrong, width: 2),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.black.withValues(alpha: 0.35), p.well, p.well],
+                  stops: const [0, 0.18, 1],
                 ),
+                boxShadow: [BoxShadow(color: p.backgroundDeep, offset: const Offset(0, 4))],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -154,21 +157,21 @@ class _Gap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
+    final p = GamePalette.of(context);
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 160),
+      duration: const Duration(milliseconds: 120),
       curve: Curves.easeOutCubic,
       width: open ? tile + spacing * 2 : spacing,
       height: tile,
       padding: EdgeInsets.symmetric(horizontal: open ? spacing : 0),
       child: AnimatedOpacity(
-        duration: const Duration(milliseconds: 160),
+        duration: const Duration(milliseconds: 120),
         opacity: open ? 1 : 0,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: scheme.primary.withValues(alpha: 0.12),
-            borderRadius: BorderRadius.circular(tile * 0.22),
-            border: Border.all(color: scheme.primary.withValues(alpha: 0.6), width: 1.5),
+            color: p.blue.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(tile * 0.14),
+            border: Border.all(color: p.blue, width: 1.5),
           ),
         ),
       ),
