@@ -14,6 +14,12 @@
   5. Na seção 10 de `docs/engenharia-reversa-emplake.md`, trocar as referências à pasta por "material local, fora do repositório".
 - [ ] Deixar o repositório no GitHub **privado** e adicionar o Caio como colaborador.
 
+## Visual
+
+- [ ] Criar a versão **clara** dos temas (o enunciado exige escolher claro/escuro e começar no tema do dispositivo). Hoje as 3 variações (feltro, azul-roxo, minimal) são escuras.
+- [ ] Ligar a cor semente das configurações aos acentos do tema (aba ativa, botão primário, foco).
+- [ ] Tirar o botão temporário de trocar tema (ícone de paleta no topo) quando a tela de Configurações existir.
+
 ## Firebase
 
 - [ ] Restringir a API key do navegador no Google Cloud Console (sites: `localhost`, `emplake-ddm-6ab5b.web.app`, `emplake-ddm-6ab5b.firebaseapp.com`) e fechar o alerta do GitHub como "Won't fix" (a chave do Firebase web é pública por design; quem protege os dados são as regras do Firestore).
