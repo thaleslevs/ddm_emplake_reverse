@@ -31,7 +31,7 @@ class LoginPage extends StatelessWidget {
       child: Stack(
         children: [
           Theme(
-            // O fundo animado aparece por trás da tela do firebase_ui.
+            // O fundo do jogo aparece por trás da tela do firebase_ui.
             data: theme.copyWith(scaffoldBackgroundColor: Colors.transparent),
             child: SignInScreen(
               providers: FirebaseUIAuth.providersFor(FirebaseAuth.instance.app),

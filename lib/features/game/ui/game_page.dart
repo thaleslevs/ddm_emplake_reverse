@@ -124,7 +124,7 @@ class _GamePageState extends ConsumerState<GamePage> {
       }
     });
 
-    // O fundo animado e a navbar vêm do AppShell.
+    // O fundo e a navbar vêm do AppShell.
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(

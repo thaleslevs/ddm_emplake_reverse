@@ -8,7 +8,7 @@ import '../core/ui/corner_buttons.dart';
 import '../l10n/gen/app_localizations.dart';
 import 'help_dialog.dart';
 
-/// Moldura das páginas depois do login: fundo animado único e a navbar curva
+/// Moldura das páginas depois do login: o fundo do jogo (um só) e a navbar curva
 /// (Jogar, Histórico, Ajuda, Configurações).
 ///
 /// A Ajuda não é uma aba: abre um diálogo e a navbar fica onde estava.

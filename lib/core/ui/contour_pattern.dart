@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:math';
 import 'dart:ui' as ui;
 
@@ -7,77 +6,25 @@ import 'package:flutter/material.dart';
 
 import '../theme/game_palette.dart';
 
-/// Fundo animado com curvas de nível.
+/// Fundo com curvas de nível, estático.
 ///
-/// - [PatternStyle.lines]: linhas finas que ondulam e escorregam (tema verde).
-/// - [PatternStyle.flames]: faixas preenchidas que sobem como chamas (tema roxo).
+/// - [PatternStyle.lines]: linhas finas (tema verde).
+/// - [PatternStyle.flames]: faixas preenchidas como chamas (tema roxo).
 ///
-/// Tudo é desenhado em vetor a cada quadro (marching squares numa grade), sem
-/// imagens nem shaders, para a entrega continuar sendo só `.dart`.
-class ContourPattern extends StatefulWidget {
+/// Desenhado em vetor (marching squares numa grade), sem imagens nem shaders,
+/// para a entrega continuar sendo só `.dart`. Já foi animado, mas redesenhar
+/// a tela inteira 20 vezes por segundo custava ~20% da thread principal; agora
+/// só é redesenhado quando o tamanho da tela, o tema ou a cor mudam.
+class ContourPattern extends StatelessWidget {
   const ContourPattern({super.key, required this.style, required this.color});
 
   final PatternStyle style;
   final Color color;
 
   @override
-  State<ContourPattern> createState() => _ContourPatternState();
-}
-
-class _ContourPatternState extends State<ContourPattern> {
-  /// Quadros por segundo do fundo. O movimento é lento, então 20 basta.
-  ///
-  /// Usa um [Timer] e não um Ticker de propósito: um Ticker faz o Flutter gerar
-  /// um quadro a cada atualização da tela (até 144 por segundo), e no web cada
-  /// quadro redesenha a cena inteira, inclusive este fundo pesado, mesmo
-  /// quando ele não mudou. Com o timer, sem outras animações, a tela só é
-  /// redesenhada 20 vezes por segundo.
-  static const _fps = 20;
-
-  final _time = ValueNotifier<double>(0);
-  final _clock = Stopwatch();
-  Timer? _timer;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _sync();
-  }
-
-  @override
-  void didUpdateWidget(ContourPattern old) {
-    super.didUpdateWidget(old);
-    _sync();
-  }
-
-  /// Só anima quando há padrão e o sistema não pede para reduzir movimento.
-  void _sync() {
-    final run = widget.style != PatternStyle.none && !MediaQuery.disableAnimationsOf(context);
-    if (!run) {
-      _timer?.cancel();
-      _timer = null;
-      _clock.stop();
-    } else if (_timer == null) {
-      _clock.start();
-      _timer = Timer.periodic(const Duration(microseconds: 1000000 ~/ _fps), (_) {
-        _time.value = _clock.elapsedMicroseconds / 1e6;
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    _time.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (widget.style == PatternStyle.none) return const SizedBox.expand();
-    return SizedBox.expand(
-      child: CustomPaint(painter: _ContourPainter(_time, widget.style, widget.color)),
-    );
+    if (style == PatternStyle.none) return const SizedBox.expand();
+    return SizedBox.expand(child: CustomPaint(painter: _ContourPainter(style, color)));
   }
 }
 
@@ -86,38 +33,25 @@ const _frameWidth = 480.0;
 const _frameHeight = 300.0;
 
 class _ContourPainter extends CustomPainter {
-  _ContourPainter(this.time, this.style, this.color) : super(repaint: time);
+  const _ContourPainter(this.style, this.color);
 
-  final ValueListenable<double> time;
   final PatternStyle style;
   final Color color;
 
   /// Tamanho da célula da grade, em pixels lógicos.
   static const _cell = 12.0;
 
-  /// Velocidade da deformação do campo (os dois estilos).
-  static const _warpSpeed = 0.35;
-
-  /// Deslizamento das linhas, em "níveis" por segundo.
-  static const _lineFlow = 0.12;
-
-  /// Subida das chamas, em radianos por segundo.
-  static const _flameFlow = 0.5;
-
   @override
   void paint(Canvas canvas, Size size) {
     if (size.isEmpty) return;
     final grid = _Grid(size, _cell);
-    final seconds = time.value;
-    final warp = seconds * _warpSpeed;
 
     // Desenha tudo em uma chamada por camada (uma lista de segmentos ou de
     // triângulos). No web, montar um Path faz uma chamada ao motor gráfico por
-    // moveTo/lineTo, milhares por quadro; era isso que pesava.
+    // moveTo/lineTo, milhares por desenho.
     switch (style) {
       case PatternStyle.lines:
-        final flow = seconds * _lineFlow;
-        grid.sampleField(warp, flames: false, flow: flow);
+        grid.sampleField(0, flames: false, flow: 0);
         canvas.drawRawPoints(
           ui.PointMode.lines,
           grid.isolineSegments(),
@@ -129,8 +63,7 @@ class _ContourPainter extends CustomPainter {
             ..color = color.withValues(alpha: 0.18),
         );
       case PatternStyle.flames:
-        final flow = seconds * _flameFlow;
-        grid.sampleField(warp, flames: true, flow: flow);
+        grid.sampleField(0, flames: true, flow: 0);
         for (final (threshold, alpha) in [(0.575, 0.16), (0.88, 0.14)]) {
           canvas.drawVertices(
             ui.Vertices.raw(ui.VertexMode.triangles, grid.regionTriangles(threshold)),
@@ -144,7 +77,7 @@ class _ContourPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_ContourPainter old) => old.time != time || old.style != style || old.color != color;
+  bool shouldRepaint(_ContourPainter old) => old.style != style || old.color != color;
 }
 
 /// Grade de amostras cobrindo a tela, com o mesmo enquadramento (cover) da
