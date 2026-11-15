@@ -192,27 +192,29 @@ users/{uid}/solved/{level}_{nnnn} { number, level, expression, latex, solvedAt }
 | 4 | integração Firestore (resolvidos, pontuação, histórico) | deploy Hosting, som opcional, restaurar rota |
 | 5 | **twist visual** + polimento | revisão do checklist do professor |
 
-## 10. Checklist do professor (marcar no fim)
+## 10. Checklist do professor (revisado em 14/11)
 
-- [ ] 4 níveis com os operadores exatos; divisão fracionária só no Fácil (erro nos demais)
-- [ ] LaTeX abaixo da fórmula
-- [ ] interface única
-- [ ] som opcional (desligado por padrão)
-- [ ] web hospedada
-- [ ] firebase_ui_auth com e-mail/senha + Google
-- [ ] login com nomes do grupo e idioma com bandeiras
-- [ ] 100% dos textos em PT/EN via flutter_localizations (inclusive firebase_ui)
-- [ ] curved_navigation_bar em todas as páginas pós-login, com Configurações e Ajuda (showDialog)
-- [ ] configurações: tema claro/escuro, tamanho da fonte, tipo da fonte, cor semente, temas prontos, padrão do sistema
-- [ ] reabrir na última página (SharedPreferences)
-- [ ] Riverpod útil
-- [ ] go_router
-- [ ] animação
-- [ ] Firestore via FutureBuilder + progress indicator customizado
-- [ ] guarda os resolvidos e só sorteia não resolvidos
-- [ ] pular número
-- [ ] responsivo
-- [ ] entrega só de `.dart` funciona (l10n gerado em `lib/`, sem assets obrigatórios)
+- [x] 4 níveis com os operadores exatos; divisão fracionária só no Fácil (erro nos demais)
+- [x] LaTeX abaixo da fórmula
+- [x] interface única
+- [x] som opcional (desligado por padrão), com volume separado para música e efeitos
+- [x] web hospedada: https://emplake-ddm-6ab5b.web.app
+- [x] firebase_ui_auth com e-mail/senha + Google
+- [x] login com nomes do grupo e idioma com bandeiras
+- [x] 100% dos textos em PT/EN via flutter_localizations (inclusive firebase_ui)
+- [x] curved_navigation_bar em todas as páginas pós-login, com Configurações e Ajuda (showDialog)
+- [x] configurações: tema claro/escuro, tamanho da fonte, tipo da fonte, cor semente, temas prontos, padrão do sistema
+- [x] reabrir na última página (SharedPreferences)
+- [x] Riverpod útil
+- [x] go_router
+- [x] animação
+- [x] Firestore via FutureBuilder + progress indicator customizado
+- [x] guarda os resolvidos e só sorteia não resolvidos
+- [x] pular número
+- [x] responsivo
+- [x] entrega só de `.dart` funciona (l10n gerado em `lib/`, sem assets obrigatórios)
+
+Extras: solver que só sorteia números com solução, pontuação por nível, loja com skins e efeitos, ranking geral por pontos ganhos.
 
 ## Fora do escopo inicial (ideias para o twist)
 

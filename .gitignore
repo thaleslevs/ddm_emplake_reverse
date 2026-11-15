@@ -50,3 +50,6 @@ app.*.map.json
 # Ferramentas locais
 .omc/
 .firebase/
+
+# Pacotes de entrega
+/entrega/
