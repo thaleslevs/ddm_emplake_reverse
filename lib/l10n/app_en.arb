@@ -24,6 +24,12 @@
   "helpRuleLevels": "The harder the level, the fewer the operators. Only Easy accepts divisions that don't give a whole number.",
   "helpRuleSolved": "Every number you solve is saved to your account and won't show up again at that level. If you get stuck, use Skip.",
   "helpClose": "Got it",
+  "helpRuleScore": "Every solved number is worth points by level: Easy 1, Intermediate 2, Advanced 3 and Hard 5. Your score is saved to your account.",
+
+  "scoreTitle": "Score",
+  "scoreLabel": "{score, plural, =1{1 point} other{{score} points}}",
+  "historySolvedCount": "{count, plural, =0{No numbers solved yet} =1{1 number solved} other{{count} numbers solved}}",
+  "pointsGained": "{points, plural, =1{+1 point} other{+{points} points}}",
 
   "historyTitle": "History",
   "historyEmpty": "You haven't solved any number yet. Your solves show up here.",

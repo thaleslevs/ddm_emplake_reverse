@@ -19,6 +19,7 @@ Future<void> showHelpDialog(BuildContext context) {
         l10n.helpRuleNoJoin,
         l10n.helpRuleLevels,
         l10n.helpRuleSolved,
+        l10n.helpRuleScore,
       ];
       return AlertDialog(
         backgroundColor: p.panel,

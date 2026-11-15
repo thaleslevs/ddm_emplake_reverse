@@ -82,6 +82,47 @@ class AppLocalizationsEn extends AppLocalizations {
   String get helpClose => 'Got it';
 
   @override
+  String get helpRuleScore =>
+      'Every solved number is worth points by level: Easy 1, Intermediate 2, Advanced 3 and Hard 5. Your score is saved to your account.';
+
+  @override
+  String get scoreTitle => 'Score';
+
+  @override
+  String scoreLabel(int score) {
+    String _temp0 = intl.Intl.pluralLogic(
+      score,
+      locale: localeName,
+      other: '$score points',
+      one: '1 point',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String historySolvedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count numbers solved',
+      one: '1 number solved',
+      zero: 'No numbers solved yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String pointsGained(int points) {
+    String _temp0 = intl.Intl.pluralLogic(
+      points,
+      locale: localeName,
+      other: '+$points points',
+      one: '+1 point',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get historyTitle => 'History';
 
   @override

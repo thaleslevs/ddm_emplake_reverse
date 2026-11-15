@@ -224,6 +224,36 @@ abstract class AppLocalizations {
   /// **'Entendi'**
   String get helpClose;
 
+  /// No description provided for @helpRuleScore.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cada número resolvido vale pontos conforme o nível: Fácil 1, Intermediário 2, Avançado 3 e Difícil 5. A pontuação fica salva na sua conta.'**
+  String get helpRuleScore;
+
+  /// No description provided for @scoreTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pontos'**
+  String get scoreTitle;
+
+  /// No description provided for @scoreLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'{score, plural, =1{1 ponto} other{{score} pontos}}'**
+  String scoreLabel(int score);
+
+  /// No description provided for @historySolvedCount.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =0{Nenhum número resolvido ainda} =1{1 número resolvido} other{{count} números resolvidos}}'**
+  String historySolvedCount(int count);
+
+  /// No description provided for @pointsGained.
+  ///
+  /// In pt, this message translates to:
+  /// **'{points, plural, =1{+1 ponto} other{+{points} pontos}}'**
+  String pointsGained(int points);
+
   /// No description provided for @historyTitle.
   ///
   /// In pt, this message translates to:

@@ -30,8 +30,9 @@ enum AccentOption {
 }
 
 /// Famílias do Google Fonts oferecidas para o texto da interface. O título e
-/// as peças continuam na fonte pixel.
-const fontFamilies = ['Inter', 'Nunito', 'Atkinson Hyperlegible', 'Roboto Slab', 'Space Grotesk'];
+/// as peças continuam na fonte pixel. Roboto e Garamond são os exemplos do
+/// enunciado; a Helvetica não está no Google Fonts, e a Inter faz o papel dela.
+const fontFamilies = ['Inter', 'Roboto', 'EB Garamond', 'Nunito', 'Atkinson Hyperlegible', 'Space Grotesk'];
 
 @immutable
 class AppSettings {

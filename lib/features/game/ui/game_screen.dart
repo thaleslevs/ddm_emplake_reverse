@@ -28,6 +28,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     try {
       final solved = await widget.repository.loadAll();
       ref.read(solvedProvider.notifier).seed(solved);
+      // Sem esperar: só mantém a pontuação salva em dia com os resolvidos.
+      widget.repository.syncScore(solved).catchError((Object e) => debugPrint('Falha ao salvar pontuação: $e'));
       return true;
     } catch (e) {
       debugPrint('Falha ao carregar resolvidos: $e');

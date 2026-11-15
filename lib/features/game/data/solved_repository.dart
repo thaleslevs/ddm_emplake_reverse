@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../auth/auth_providers.dart';
 import '../domain/level.dart';
+import '../state/solved_store.dart';
 
 /// Números resolvidos de um jogador no Firestore, separados por nível:
 /// `users/{uid}/solved/{nivel}_{numero}`.
@@ -36,14 +37,31 @@ class SolvedRepository {
     return [for (final doc in snapshot.docs) ?SolvedEntry.fromData(doc.data())];
   }
 
+  DocumentReference<Map<String, dynamic>> get _profile => _db.collection('users').doc(uid);
+
+  /// Guarda o número resolvido e soma os pontos do nível na pontuação do
+  /// jogador (`users/{uid}`: `score` e `solvedCount`), juntos num lote só.
   Future<void> markSolved(Level level, String number, {required String latex}) {
-    return _solved.doc('${level.name}_$number').set({
-      'level': level.name,
-      'number': number,
-      'latex': latex,
-      'solvedAt': FieldValue.serverTimestamp(),
-    });
+    return (_db.batch()
+          ..set(_solved.doc('${level.name}_$number'), {
+            'level': level.name,
+            'number': number,
+            'latex': latex,
+            'solvedAt': FieldValue.serverTimestamp(),
+          })
+          ..set(_profile, {
+            'score': FieldValue.increment(level.points),
+            'solvedCount': FieldValue.increment(1),
+          }, SetOptions(merge: true)))
+        .commit();
   }
+
+  /// Regrava a pontuação a partir dos resolvidos (a fonte da verdade). Feito ao
+  /// entrar, corrige contas antigas ou uma gravação que tenha falhado.
+  Future<void> syncScore(Map<Level, Set<String>> solved) => _profile.set({
+    'score': scoreOf(solved),
+    'solvedCount': solved.values.fold(0, (total, numbers) => total + numbers.length),
+  }, SetOptions(merge: true));
 }
 
 /// Um número resolvido, como aparece no histórico.

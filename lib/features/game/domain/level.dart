@@ -29,6 +29,14 @@ enum Level {
 
   bool allows(TokenKind kind) =>
       kind == TokenKind.digit || kind == TokenKind.equals || operators.contains(kind);
+
+  /// Pontos por número resolvido: quanto menos operadores, mais difícil.
+  int get points => switch (this) {
+    Level.easy => 1,
+    Level.intermediate => 2,
+    Level.advanced => 3,
+    Level.hard => 5,
+  };
 }
 
 const _basic = {

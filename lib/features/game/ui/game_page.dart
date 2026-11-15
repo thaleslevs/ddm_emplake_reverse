@@ -21,6 +21,7 @@ import 'flight_layer.dart';
 import 'game_texts.dart';
 import 'latex_preview.dart';
 import 'operator_palette.dart';
+import 'score_badge.dart';
 import 'verdict_banner.dart';
 
 class GamePage extends ConsumerStatefulWidget {
@@ -150,7 +151,9 @@ class _GamePageState extends ConsumerState<GamePage> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           GameTitle(l10n.appTitle),
-                          SizedBox(height: wide ? 28 : 20),
+                          const SizedBox(height: 8),
+                          const Center(child: ScoreBadge()),
+                          SizedBox(height: wide ? 20 : 14),
                           GameTabs<Level>(
                             values: Level.values,
                             selected: _level,

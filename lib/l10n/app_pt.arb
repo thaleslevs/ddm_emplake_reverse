@@ -24,6 +24,15 @@
   "helpRuleLevels": "Quanto mais difícil o nível, menos operadores. Só o Fácil aceita divisões que não dão número inteiro.",
   "helpRuleSolved": "Cada número resolvido fica salvo na sua conta e não volta a aparecer naquele nível. Se travar, use Pular.",
   "helpClose": "Entendi",
+  "helpRuleScore": "Cada número resolvido vale pontos conforme o nível: Fácil 1, Intermediário 2, Avançado 3 e Difícil 5. A pontuação fica salva na sua conta.",
+
+  "scoreTitle": "Pontos",
+  "scoreLabel": "{score, plural, =1{1 ponto} other{{score} pontos}}",
+  "@scoreLabel": { "placeholders": { "score": { "type": "int" } } },
+  "historySolvedCount": "{count, plural, =0{Nenhum número resolvido ainda} =1{1 número resolvido} other{{count} números resolvidos}}",
+  "@historySolvedCount": { "placeholders": { "count": { "type": "int" } } },
+  "pointsGained": "{points, plural, =1{+1 ponto} other{+{points} pontos}}",
+  "@pointsGained": { "placeholders": { "points": { "type": "int" } } },
 
   "historyTitle": "Histórico",
   "historyEmpty": "Você ainda não resolveu nenhum número. Os acertos aparecem aqui.",

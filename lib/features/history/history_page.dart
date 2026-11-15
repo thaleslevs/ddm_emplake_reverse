@@ -36,9 +36,33 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
       _future = repository.history();
     }
 
+    final p = GamePalette.of(context);
     return PageFrame(
       title: l10n.historyTitle,
       children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: GamePanel(
+            child: Row(
+              children: [
+                Icon(Icons.star_rounded, color: p.gold, size: 32),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(l10n.scoreLabel(ref.watch(scoreProvider)), style: GameType.display(28, p.gold)),
+                      Text(
+                        l10n.historySolvedCount(solvedCount),
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: p.textMuted),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
         FutureBuilder<List<SolvedEntry>>(
           future: _future,
           builder: (context, snapshot) {
@@ -96,7 +120,11 @@ class _EntryTile extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  when == null ? l10n.levelName(entry.level) : '${l10n.levelName(entry.level)} · $when',
+                  [
+                    l10n.levelName(entry.level),
+                    l10n.pointsGained(entry.level.points),
+                    ?when,
+                  ].join(' · '),
                   style: text.bodySmall!.copyWith(color: p.textMuted),
                 ),
               ],

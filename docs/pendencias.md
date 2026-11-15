@@ -16,12 +16,13 @@
 
 ## Visual
 
-- [ ] Criar a versão **clara** dos temas (o enunciado exige escolher claro/escuro e começar no tema do dispositivo). Hoje as 3 variações (feltro, azul-roxo, minimal) são escuras.
-- [ ] Ligar a cor semente das configurações aos acentos do tema (aba ativa, botão primário, foco).
-- [ ] Tirar o botão temporário de trocar tema (ícone de paleta no topo) quando a tela de Configurações existir.
+- [x] Criar a versão **clara** dos temas; o app começa no tema do dispositivo.
+- [x] Ligar a cor semente das configurações aos acentos do tema (aba ativa, botões, navbar, foco).
+- [x] Tirar o botão temporário de trocar tema (agora fica em Configurações).
 
 ## Firebase
 
-- [ ] Restringir a API key do navegador no Google Cloud Console (sites: `localhost`, `emplake-ddm-6ab5b.web.app`, `emplake-ddm-6ab5b.firebaseapp.com`) e fechar o alerta do GitHub como "Won't fix" (a chave do Firebase web é pública por design; quem protege os dados são as regras do Firestore).
+- [x] Restringir a API key do navegador no Google Cloud Console (feito em 14/11). Sites liberados: `emplake-ddm-6ab5b.web.app`, `emplake-ddm-6ab5b.firebaseapp.com`, `localhost:8080` e `localhost:8090`. Para rodar em outra porta, acrescente o endereço lá.
+- [ ] Fechar o alerta do GitHub sobre a chave como "Won't fix" (a chave do Firebase web é pública por design; quem protege os dados são as regras do Firestore).
 - [x] Ativar o Authentication e o provedor E-mail/senha (feito em 14/11).
 - [x] Ativar o provedor Google em Authentication, com nome público "Emplake" (feito em 14/11). O ID do cliente da Web já está em `lib/core/config.dart`.

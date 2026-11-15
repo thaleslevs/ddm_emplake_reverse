@@ -21,3 +21,14 @@ class SolvedStore extends Notifier<Map<Level, Set<String>>> {
     level: Set.unmodifiable({...state[level]!, number}),
   };
 }
+
+/// Pontuação do jogador, derivada dos resolvidos ([Level.points] por número).
+/// Assim nunca desencontra dos números guardados no Firestore.
+final scoreProvider = Provider<int>((ref) => scoreOf(ref.watch(solvedProvider)));
+
+final solvedCountProvider = Provider<int>(
+  (ref) => ref.watch(solvedProvider).values.fold(0, (total, numbers) => total + numbers.length),
+);
+
+int scoreOf(Map<Level, Set<String>> solved) =>
+    solved.entries.fold(0, (total, e) => total + e.key.points * e.value.length);

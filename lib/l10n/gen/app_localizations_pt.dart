@@ -82,6 +82,47 @@ class AppLocalizationsPt extends AppLocalizations {
   String get helpClose => 'Entendi';
 
   @override
+  String get helpRuleScore =>
+      'Cada número resolvido vale pontos conforme o nível: Fácil 1, Intermediário 2, Avançado 3 e Difícil 5. A pontuação fica salva na sua conta.';
+
+  @override
+  String get scoreTitle => 'Pontos';
+
+  @override
+  String scoreLabel(int score) {
+    String _temp0 = intl.Intl.pluralLogic(
+      score,
+      locale: localeName,
+      other: '$score pontos',
+      one: '1 ponto',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String historySolvedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count números resolvidos',
+      one: '1 número resolvido',
+      zero: 'Nenhum número resolvido ainda',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String pointsGained(int points) {
+    String _temp0 = intl.Intl.pluralLogic(
+      points,
+      locale: localeName,
+      other: '+$points pontos',
+      one: '+1 ponto',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get historyTitle => 'Histórico';
 
   @override
