@@ -5,7 +5,7 @@ Fonte: https://www.cyan-lang.org/emplake/ — analisado em 2026-11-13.
 **Como foi obtido:** o site é um export Web do **Godot 3.5.3**. Baixei o `index.pck`, extraí todos os arquivos e decompilei os scripts GDScript (`.gdc`, bytecode v13) de volta para código legível. Depois rodei o jogo em navegador headless (Playwright) para confirmar o comportamento.
 Então as regras abaixo vêm do **código real** do jogo, e não de suposição. Onde algo só foi deduzido do código e não testado no navegador, está marcado *(código)*.
 
-Material bruto: `docs/referencia-original/` (scripts decompilados, cenas `.tscn`, screenshots e as ferramentas `unpck.py`/`gdc.py`).
+Material bruto (scripts decompilados, cenas `.tscn`, screenshots e as ferramentas `unpck.py`/`gdc.py`): material local, fora do repositório, porque o jogo original é do professor.
 
 ---
 
@@ -226,4 +226,4 @@ Esses desafios podem servir de banco de "números difíceis" e de casos de teste
 - Confirmar se ele viu algo no **Específico** ou na **Aventura** que não está aqui. O fluxo de compra de peças entre rodadas é o ponto mais confuso.
 - Conferir o texto completo do **Tutorial do menu ⚙** (lista de símbolos). No pacote, `TutorialTxt.tres` só tem `+` e o começo de `-`, então o tutorial por símbolo está incompleto no original.
 - Se ele listou o Elementar como "só + − × ÷ ( )", o código mostra que `√ ∛ !` também aparecem. Vale testar no navegador para confirmar.
-- Os screenshots dele devem bater com `docs/referencia-original/screenshots/`.
+- Os screenshots dele devem bater com os do material local (fora do repositório).
