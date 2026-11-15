@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/theme/game_palette.dart';
 import '../domain/token.dart';
+import 'pixel_glyph.dart';
 
 class PieceTile extends StatelessWidget {
   const PieceTile({
@@ -24,16 +25,23 @@ class PieceTile extends StatelessWidget {
 
   bool get _isDigit => kind == TokenKind.digit;
 
+  /// Tamanho da fonte pixel numa peça de operador de um caractere.
+  static const _operatorScale = 0.72;
+
   @override
   Widget build(BuildContext context) {
     final p = GamePalette.of(context);
     final (face, edge, ink) = switch (kind) {
       TokenKind.digit => (p.tileFace, p.tileEdge, p.tileInk),
-      TokenKind.equals => (p.equalsFace, p.equalsEdge, p.text),
+      // Letra clara sobre o vermelho nos temas claros e escuros.
+      TokenKind.equals => (p.equalsFace, p.equalsEdge, p.tileFace),
       _ => (p.operatorFace, p.operatorEdge, p.text),
     };
     final label = _isDigit ? '$digit' : kind.symbol;
-    final fontScale = label.length > 1 ? 0.34 : (_isDigit ? 0.5 : 0.44);
+    final fontScale = label.length > 1 ? 0.5 : (_isDigit ? 0.68 : _operatorScale);
+    final glyph = PixelGlyph.supports(kind)
+        ? PixelGlyph(kind: kind, unit: size * _operatorScale * pixelsPerEm, color: ink)
+        : Text(label, maxLines: 1, textScaler: TextScaler.noScaling, style: GameType.tile(size * fontScale, ink));
     final depth = (size * 0.08).roundToDouble().clamp(2.0, 5.0);
     final border = highlightError
         ? p.red
@@ -61,14 +69,7 @@ class PieceTile extends StatelessWidget {
       padding: EdgeInsets.only(bottom: depth),
       child: DecoratedBox(
         decoration: BoxDecoration(color: face, borderRadius: BorderRadius.circular(size * 0.12)),
-        child: Center(
-          child: Text(
-            label,
-            maxLines: 1,
-            textScaler: TextScaler.noScaling,
-            style: GameType.tile(size * fontScale, ink),
-          ),
-        ),
+        child: Center(child: glyph),
       ),
     );
   }

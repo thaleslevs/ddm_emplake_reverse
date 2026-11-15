@@ -94,7 +94,12 @@ class _ExpressionBoardState extends ConsumerState<ExpressionBoard> {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Colors.black.withValues(alpha: 0.35), p.well, p.well],
+                  // Sombra interna no topo; mais leve no tema claro.
+                  colors: [
+                    Colors.black.withValues(alpha: Theme.of(context).brightness == Brightness.dark ? 0.35 : 0.08),
+                    p.well,
+                    p.well,
+                  ],
                   stops: const [0, 0.18, 1],
                 ),
                 boxShadow: [BoxShadow(color: p.backgroundDeep, offset: const Offset(0, 4))],

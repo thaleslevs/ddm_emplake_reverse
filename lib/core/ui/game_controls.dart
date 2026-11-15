@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 
 import '../theme/app_theme.dart';
 import '../theme/game_palette.dart';
+import 'pixel_clown.dart';
+import 'title_clown.dart';
 
 const _snap = Duration(milliseconds: 90);
 
@@ -16,15 +18,25 @@ class GameTitle extends StatelessWidget {
     final p = GamePalette.of(context);
     final width = MediaQuery.sizeOf(context).width;
     final size = width < 480 ? 48.0 : 72.0;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _Ornament(color: p.gold, mirrored: false),
-        SizedBox(width: size * 0.3),
-        Text(text.toUpperCase(), style: GameType.display(size, p.text)),
-        SizedBox(width: size * 0.3),
-        _Ornament(color: p.gold, mirrored: true),
-      ],
+    // Palhaços com ~1,4x a altura das letras.
+    final clownUnit = size * 0.036;
+    // FittedBox: em tela estreita a linha toda encolhe em vez de estourar.
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TitleClown(colors: ClownColors.green, unit: clownUnit),
+          SizedBox(width: size * 0.2),
+          _Ornament(color: p.gold, mirrored: false),
+          SizedBox(width: size * 0.3),
+          Text(text.toUpperCase(), style: GameType.display(size, p.text)),
+          SizedBox(width: size * 0.3),
+          _Ornament(color: p.gold, mirrored: true),
+          SizedBox(width: size * 0.2),
+          TitleClown(colors: ClownColors.purple, unit: clownUnit, phase: 0.5),
+        ],
+      ),
     );
   }
 }
