@@ -6,6 +6,8 @@ Jogo de igualdades com 4 dígitos, feito em Flutter Web para a disciplina de Des
 
 **Jogar online:** https://emplake-ddm-6ab5b.web.app
 
+**Código:** https://github.com/thaleslevs/ddm_emplake_reverse (branch `main`)
+
 ## Como jogar
 
 Arraste operadores para antes, entre ou depois dos 4 dígitos do número, sem mudar a ordem deles, até formar uma igualdade verdadeira. O `=` é uma peça só. Quanto mais difícil o nível, menos operadores estão disponíveis:
@@ -50,7 +52,7 @@ Os testes ficam em `test/`:
 flutter test
 ```
 
-## Entrega só com os arquivos `.dart`
+## Rodar só com os arquivos `.dart`
 
 O app não usa assets próprios: fontes, sons, música e desenhos são gerados pelo código. Para rodar só com a pasta `lib/`, crie um projeto Flutter, substitua a `lib/` e adicione as dependências:
 

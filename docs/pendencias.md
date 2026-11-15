@@ -4,11 +4,14 @@
 
 - [x] **Tirar o código decompilado do jogo original do repositório e do histórico** (feito em 14/11).
   O histórico de `main` e `checklist-completo` foi reescrito sem a pasta e enviado com force push. Quem tinha o repositório clonado precisa clonar de novo (ou `git fetch` + `git reset --hard origin/main`), senão o histórico antigo volta no próximo push.
-- [ ] **Thales:** deixar o repositório no GitHub **privado** (Settings → General → Danger Zone → Change visibility). Só o dono tem acesso a essa opção; a conta do Caio não tem.
+- [ ] **Thales: liberar o repositório para o professor.** A entrega mudou em 12/11: agora é o link do GitHub e o link do site. O repositório está privado, então o professor não consegue abrir. Duas opções (só o dono tem acesso a elas):
+  - adicionar o professor como colaborador (Settings → Collaborators → Add people, com o usuário dele no GitHub); ou
+  - deixar público (Settings → General → Danger Zone → Change visibility). O material do jogo original já saiu do histórico.
+- [ ] **Entregar no AVA:** https://github.com/thaleslevs/ddm_emplake_reverse e https://emplake-ddm-6ab5b.web.app
 - [ ] **Thales:** clonar o repositório de novo (o histórico foi reescrito em 14/11).
 - [ ] **Caio:** testar o login com Google no site. O Sair e o redirecionamento para o login já foram testados.
 - [x] README com link do jogo, checklist, como rodar e como usar só a pasta `lib/`.
-- [x] Pacotes de entrega em `entrega/` (fora do Git): projeto completo e só a `lib/`.
+- [x] Pacotes em `entrega/` (fora do Git): projeto completo e só a `lib/`. Não são mais exigidos; ficam como reserva.
 
 ## Visual
 
