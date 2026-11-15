@@ -3,16 +3,18 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/theme/app_theme.dart';
+import '../../../core/audio/game_sound.dart';
+import '../../../core/audio/sounds.dart';
 import '../../../core/theme/game_palette.dart';
-import '../../../core/ui/felt_background.dart';
 import '../../../core/ui/game_controls.dart';
+import '../../../core/ui/page_frame.dart';
 import '../../../l10n/gen/app_localizations.dart';
 import '../domain/judge.dart';
 import '../domain/latex.dart';
 import '../domain/level.dart';
 import '../domain/token.dart';
 import '../state/game_controller.dart';
+import 'clown_burst.dart';
 import 'drag_support.dart';
 import 'expression_board.dart';
 import 'flight_layer.dart';
@@ -22,9 +24,12 @@ import 'operator_palette.dart';
 import 'verdict_banner.dart';
 
 class GamePage extends ConsumerStatefulWidget {
-  const GamePage({super.key, this.initialLevel = Level.easy});
+  const GamePage({super.key, this.initialLevel = Level.easy, this.loadFailed = false});
 
   final Level initialLevel;
+
+  /// Os resolvidos não carregaram do Firestore: avisa o jogador uma vez.
+  final bool loadFailed;
 
   @override
   ConsumerState<GamePage> createState() => _GamePageState();
@@ -37,7 +42,25 @@ class _GamePageState extends ConsumerState<GamePage> {
   List<Flight> _flights = const [];
   Timer? _flightTimer;
 
+  /// Reação da última verificação (palhaços felizes no acerto, tristes no
+  /// erro); cada mudança em [_reactions] solta uma leva na tela.
+  ClownMood _mood = ClownMood.sad;
+  int _reactions = 0;
+
   GameController get _controller => ref.read(gameControllerProvider(_level).notifier);
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.loadFailed) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context).solvedLoadError)),
+        );
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -48,6 +71,11 @@ class _GamePageState extends ConsumerState<GamePage> {
   void _check() {
     final state = ref.read(gameControllerProvider(_level));
     final verdict = _controller.check();
+    ref.read(soundsProvider).play(verdict is Correct ? GameSound.correct : GameSound.wrong);
+    setState(() {
+      _mood = verdict is Correct ? ClownMood.happy : ClownMood.sad;
+      _reactions++;
+    });
     if (verdict is Correct) _sendPiecesHome(state.board);
   }
 
@@ -89,10 +117,17 @@ class _GamePageState extends ConsumerState<GamePage> {
     final p = GamePalette.of(context);
     final state = ref.watch(gameControllerProvider(_level));
     final busy = _flights.isNotEmpty;
+    // "Blip" quando uma peça entra na expressão (na mesma rodada).
+    ref.listen(gameControllerProvider(_level), (previous, next) {
+      if (previous != null && next.round == previous.round && next.board.length > previous.board.length) {
+        ref.read(soundsProvider).play(GameSound.place);
+      }
+    });
 
+    // O fundo animado e a navbar vêm do AppShell.
     return Scaffold(
-      body: FeltBackground(
-        child: Stack(
+      backgroundColor: Colors.transparent,
+      body: Stack(
           key: _stackKey,
           fit: StackFit.expand,
           children: [
@@ -102,21 +137,18 @@ class _GamePageState extends ConsumerState<GamePage> {
                 final content = constraints.maxWidth.clamp(0.0, 920.0) - (wide ? 64 : 32);
                 final pieceSize = ((content - 24) / 9.9).clamp(30.0, 56.0);
                 return SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: wide ? 32 : 16, vertical: wide ? 28 : 16),
+                  padding: EdgeInsets.fromLTRB(
+                    wide ? 32 : 16,
+                    wide ? 40 : 24,
+                    wide ? 32 : 16,
+                    PageFrame.bottomInset,
+                  ),
                   child: Center(
                     child: ConstrainedBox(
                       constraints: const BoxConstraints(maxWidth: 920),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: IconButton(
-                              tooltip: ref.watch(themeVariantProvider).name,
-                              onPressed: ref.read(themeVariantProvider.notifier).next,
-                              icon: Icon(Icons.palette_outlined, color: p.textMuted),
-                            ),
-                          ),
                           GameTitle(l10n.appTitle),
                           SizedBox(height: wide ? 28 : 20),
                           GameTabs<Level>(
@@ -157,7 +189,12 @@ class _GamePageState extends ConsumerState<GamePage> {
                                 label: l10n.gameSkip,
                                 icon: Icons.skip_next_rounded,
                                 kind: GameButtonKind.secondary,
-                                onPressed: busy ? null : _controller.skip,
+                                onPressed: busy
+                                    ? null
+                                    : () {
+                                        ref.read(soundsProvider).play(GameSound.skip);
+                                        _controller.skip();
+                                      },
                               ),
                               GameButton(
                                 label: l10n.gameClear,
@@ -184,9 +221,11 @@ class _GamePageState extends ConsumerState<GamePage> {
             Positioned.fill(
               child: FlightLayer(flights: _flights, stackKey: _stackKey),
             ),
+            Positioned.fill(
+              child: ClownBurst(mood: _mood, trigger: _reactions),
+            ),
           ],
         ),
-      ),
     );
   }
 }

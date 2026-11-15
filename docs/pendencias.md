@@ -23,5 +23,5 @@
 ## Firebase
 
 - [ ] Restringir a API key do navegador no Google Cloud Console (sites: `localhost`, `emplake-ddm-6ab5b.web.app`, `emplake-ddm-6ab5b.firebaseapp.com`) e fechar o alerta do GitHub como "Won't fix" (a chave do Firebase web é pública por design; quem protege os dados são as regras do Firestore).
-- [ ] Confirmar no console que E-mail/senha e Google estão ativados em Authentication.
-- [ ] Pegar o "ID do cliente da Web" do provedor Google (para o login com Google na web).
+- [x] Ativar o Authentication e o provedor E-mail/senha (feito em 14/11).
+- [x] Ativar o provedor Google em Authentication, com nome público "Emplake" (feito em 14/11). O ID do cliente da Web já está em `lib/core/config.dart`.

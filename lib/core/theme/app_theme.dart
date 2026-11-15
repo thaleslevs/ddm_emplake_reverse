@@ -1,63 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../settings/app_settings.dart';
 import 'game_palette.dart';
-
-final themeVariantProvider = NotifierProvider<ThemeVariantController, ThemeVariant>(
-  ThemeVariantController.new,
-);
-
-class ThemeVariantController extends Notifier<ThemeVariant> {
-  @override
-  ThemeVariant build() => ThemeVariant.felt;
-
-  void select(ThemeVariant variant) => state = variant;
-
-  void next() => state = ThemeVariant.values[(state.index + 1) % ThemeVariant.values.length];
-}
 
 abstract final class GameType {
   static TextStyle display(double size, Color color) =>
       GoogleFonts.jersey10(fontSize: size, color: color, height: 1, letterSpacing: size * 0.06);
 
-  static TextStyle tile(double size, Color color) => GoogleFonts.inter(
-    fontSize: size,
-    color: color,
-    fontWeight: FontWeight.w700,
-    height: 1,
-    fontFeatures: const [FontFeature.tabularFigures()],
-  );
+  /// Peças (dígitos e operadores) na mesma fonte pixel do título.
+  /// Os símbolos que a fonte não tem (√, ∛, ⌊⌋, ⌈⌉) são desenhados à mão em
+  /// `PixelGlyph`.
+  static TextStyle tile(double size, Color color) => GoogleFonts.jersey10(fontSize: size, color: color, height: 1);
 }
 
-ThemeData buildGameTheme(ThemeVariant variant) {
-  final p = GamePalette.forVariant(variant);
-  final scheme = ColorScheme.dark(
+/// Paleta efetiva: tema pronto + claro/escuro + cor semente.
+GamePalette resolvePalette(AppSettings settings, Brightness brightness) {
+  final base = GamePalette.forVariant(settings.variant, brightness: brightness);
+  final accent = settings.accent.color;
+  return accent == null ? base : base.withAccent(accent);
+}
+
+/// Tema do app para um brilho (claro ou escuro), a partir das configurações.
+///
+/// O acento da paleta é a cor semente do [ColorScheme]: os componentes do
+/// Material (campos do login, diálogos, seleção) derivam dela.
+ThemeData buildGameTheme(AppSettings settings, Brightness brightness) {
+  final p = resolvePalette(settings, brightness);
+  final scheme = ColorScheme.fromSeed(seedColor: p.gold, brightness: brightness).copyWith(
     primary: p.gold,
     onPrimary: p.ink,
-    secondary: p.blue,
-    onSecondary: p.ink,
     error: p.red,
-    onError: p.text,
+    onError: GamePalette.onColor(p.red),
     surface: p.panel,
     onSurface: p.text,
     onSurfaceVariant: p.textMuted,
     outline: p.border,
     outlineVariant: p.border,
   );
-  final base = ThemeData(colorScheme: scheme, brightness: Brightness.dark);
+  final base = ThemeData(colorScheme: scheme, brightness: brightness);
+  TextStyle? font(TextStyle? style) => GoogleFonts.getFont(settings.fontFamily, textStyle: style);
 
   return base.copyWith(
     scaffoldBackgroundColor: p.background,
     extensions: [p],
-    textTheme: _interTextTheme(base.textTheme).apply(bodyColor: p.text, displayColor: p.text),
+    textTheme: _textTheme(base.textTheme, font).apply(bodyColor: p.text, displayColor: p.text),
     tooltipTheme: TooltipThemeData(
       decoration: BoxDecoration(
         color: p.panel,
         border: Border.all(color: p.border),
         borderRadius: BorderRadius.circular(4),
       ),
-      textStyle: GoogleFonts.inter(color: p.text, fontSize: 12),
+      textStyle: font(TextStyle(color: p.text, fontSize: 12)),
     ),
     focusColor: p.blue.withValues(alpha: 0.25),
     hoverColor: p.blue.withValues(alpha: 0.08),
@@ -65,23 +59,20 @@ ThemeData buildGameTheme(ThemeVariant variant) {
   );
 }
 
-TextTheme _interTextTheme(TextTheme t) {
-  TextStyle? inter(TextStyle? style) => GoogleFonts.inter(textStyle: style);
-  return TextTheme(
-    displayLarge: inter(t.displayLarge),
-    displayMedium: inter(t.displayMedium),
-    displaySmall: inter(t.displaySmall),
-    headlineLarge: inter(t.headlineLarge),
-    headlineMedium: inter(t.headlineMedium),
-    headlineSmall: inter(t.headlineSmall),
-    titleLarge: inter(t.titleLarge),
-    titleMedium: inter(t.titleMedium),
-    titleSmall: inter(t.titleSmall),
-    bodyLarge: inter(t.bodyLarge),
-    bodyMedium: inter(t.bodyMedium),
-    bodySmall: inter(t.bodySmall),
-    labelLarge: inter(t.labelLarge),
-    labelMedium: inter(t.labelMedium),
-    labelSmall: inter(t.labelSmall),
-  );
-}
+TextTheme _textTheme(TextTheme t, TextStyle? Function(TextStyle?) font) => TextTheme(
+  displayLarge: font(t.displayLarge),
+  displayMedium: font(t.displayMedium),
+  displaySmall: font(t.displaySmall),
+  headlineLarge: font(t.headlineLarge),
+  headlineMedium: font(t.headlineMedium),
+  headlineSmall: font(t.headlineSmall),
+  titleLarge: font(t.titleLarge),
+  titleMedium: font(t.titleMedium),
+  titleSmall: font(t.titleSmall),
+  bodyLarge: font(t.bodyLarge),
+  bodyMedium: font(t.bodyMedium),
+  bodySmall: font(t.bodySmall),
+  labelLarge: font(t.labelLarge),
+  labelMedium: font(t.labelMedium),
+  labelSmall: font(t.labelSmall),
+);

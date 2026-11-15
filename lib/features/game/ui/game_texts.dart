@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 
+import '../../../core/theme/game_palette.dart';
 import '../../../l10n/gen/app_localizations.dart';
 import '../domain/errors.dart';
 import '../domain/evaluator.dart';
@@ -7,6 +8,12 @@ import '../domain/level.dart';
 import '../domain/token.dart';
 
 extension GameTexts on AppLocalizations {
+  String themeName(ThemeVariant variant) => switch (variant) {
+    ThemeVariant.felt => themeFelt,
+    ThemeVariant.cosmic => themeCosmic,
+    ThemeVariant.minimal => themeMinimal,
+  };
+
   String levelName(Level level) => switch (level) {
     Level.easy => levelEasy,
     Level.intermediate => levelIntermediate,

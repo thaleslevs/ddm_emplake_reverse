@@ -62,7 +62,8 @@ import 'app_localizations_pt.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale)
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -70,7 +71,8 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -82,21 +84,391 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
-  static const List<Locale> supportedLocales = <Locale>[Locale('en'), Locale('pt')];
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('en'),
+    Locale('pt'),
+  ];
 
   /// No description provided for @appTitle.
   ///
   /// In pt, this message translates to:
   /// **'Emplake'**
   String get appTitle;
+
+  /// No description provided for @loginSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Entre para guardar os números que você já resolveu.'**
+  String get loginSubtitle;
+
+  /// No description provided for @registerSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Crie uma conta para guardar os números que você resolver.'**
+  String get registerSubtitle;
+
+  /// No description provided for @loginTeam.
+  ///
+  /// In pt, this message translates to:
+  /// **'Desenvolvido por'**
+  String get loginTeam;
+
+  /// No description provided for @languagePortuguese.
+  ///
+  /// In pt, this message translates to:
+  /// **'Português'**
+  String get languagePortuguese;
+
+  /// No description provided for @languageEnglish.
+  ///
+  /// In pt, this message translates to:
+  /// **'English'**
+  String get languageEnglish;
+
+  /// No description provided for @signOut.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sair'**
+  String get signOut;
+
+  /// No description provided for @loadingSolved.
+  ///
+  /// In pt, this message translates to:
+  /// **'Carregando seus números…'**
+  String get loadingSolved;
+
+  /// No description provided for @solvedLoadError.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não deu para carregar seus números resolvidos. Os próximos acertos continuam sendo salvos.'**
+  String get solvedLoadError;
+
+  /// No description provided for @navPlay.
+  ///
+  /// In pt, this message translates to:
+  /// **'Jogar'**
+  String get navPlay;
+
+  /// No description provided for @navHistory.
+  ///
+  /// In pt, this message translates to:
+  /// **'Histórico'**
+  String get navHistory;
+
+  /// No description provided for @navHelp.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ajuda'**
+  String get navHelp;
+
+  /// No description provided for @navSettings.
+  ///
+  /// In pt, this message translates to:
+  /// **'Configurações'**
+  String get navSettings;
+
+  /// No description provided for @helpTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Como jogar'**
+  String get helpTitle;
+
+  /// No description provided for @helpRuleGoal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Monte uma igualdade verdadeira usando os 4 dígitos do número, na ordem em que aparecem.'**
+  String get helpRuleGoal;
+
+  /// No description provided for @helpRuleDrag.
+  ///
+  /// In pt, this message translates to:
+  /// **'Arraste operadores para antes, entre ou depois dos dígitos. Para tirar uma peça, arraste-a para fora ou toque nela duas vezes.'**
+  String get helpRuleDrag;
+
+  /// No description provided for @helpRuleEquals.
+  ///
+  /// In pt, this message translates to:
+  /// **'O sinal de = é uma peça só: coloque-o onde a igualdade se divide.'**
+  String get helpRuleEquals;
+
+  /// No description provided for @helpRuleNoJoin.
+  ///
+  /// In pt, this message translates to:
+  /// **'Os dígitos não se juntam: 2 3 não vira 23. Entre dois dígitos sempre precisa haver um operador.'**
+  String get helpRuleNoJoin;
+
+  /// No description provided for @helpRuleLevels.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quanto mais difícil o nível, menos operadores. Só o Fácil aceita divisões que não dão número inteiro.'**
+  String get helpRuleLevels;
+
+  /// No description provided for @helpRuleSolved.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cada número resolvido fica salvo na sua conta e não volta a aparecer naquele nível. Se travar, use Pular.'**
+  String get helpRuleSolved;
+
+  /// No description provided for @helpClose.
+  ///
+  /// In pt, this message translates to:
+  /// **'Entendi'**
+  String get helpClose;
+
+  /// No description provided for @historyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Histórico'**
+  String get historyTitle;
+
+  /// No description provided for @historyEmpty.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você ainda não resolveu nenhum número. Os acertos aparecem aqui.'**
+  String get historyEmpty;
+
+  /// No description provided for @historyLoadError.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não deu para carregar o histórico.'**
+  String get historyLoadError;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Configurações'**
+  String get settingsTitle;
+
+  /// No description provided for @settingsTheme.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tema'**
+  String get settingsTheme;
+
+  /// No description provided for @settingsLanguage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Idioma'**
+  String get settingsLanguage;
+
+  /// No description provided for @settingsAccount.
+  ///
+  /// In pt, this message translates to:
+  /// **'Conta'**
+  String get settingsAccount;
+
+  /// No description provided for @settingsMode.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aparência'**
+  String get settingsMode;
+
+  /// No description provided for @modeSystem.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sistema'**
+  String get modeSystem;
+
+  /// No description provided for @modeLight.
+  ///
+  /// In pt, this message translates to:
+  /// **'Claro'**
+  String get modeLight;
+
+  /// No description provided for @modeDark.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escuro'**
+  String get modeDark;
+
+  /// No description provided for @settingsAccent.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cor de destaque'**
+  String get settingsAccent;
+
+  /// No description provided for @accentTheme.
+  ///
+  /// In pt, this message translates to:
+  /// **'Do tema'**
+  String get accentTheme;
+
+  /// No description provided for @accentCoral.
+  ///
+  /// In pt, this message translates to:
+  /// **'Coral'**
+  String get accentCoral;
+
+  /// No description provided for @accentSky.
+  ///
+  /// In pt, this message translates to:
+  /// **'Céu'**
+  String get accentSky;
+
+  /// No description provided for @accentMint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Menta'**
+  String get accentMint;
+
+  /// No description provided for @accentViolet.
+  ///
+  /// In pt, this message translates to:
+  /// **'Violeta'**
+  String get accentViolet;
+
+  /// No description provided for @accentRose.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rosa'**
+  String get accentRose;
+
+  /// No description provided for @settingsFont.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fonte do texto'**
+  String get settingsFont;
+
+  /// No description provided for @settingsTextSize.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tamanho do texto'**
+  String get settingsTextSize;
+
+  /// No description provided for @sizeSmall.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pequeno'**
+  String get sizeSmall;
+
+  /// No description provided for @sizeMedium.
+  ///
+  /// In pt, this message translates to:
+  /// **'Médio'**
+  String get sizeMedium;
+
+  /// No description provided for @sizeLarge.
+  ///
+  /// In pt, this message translates to:
+  /// **'Grande'**
+  String get sizeLarge;
+
+  /// No description provided for @sizeExtraLarge.
+  ///
+  /// In pt, this message translates to:
+  /// **'Muito grande'**
+  String get sizeExtraLarge;
+
+  /// No description provided for @settingsPreview.
+  ///
+  /// In pt, this message translates to:
+  /// **'Assim fica o texto do jogo.'**
+  String get settingsPreview;
+
+  /// No description provided for @settingsSound.
+  ///
+  /// In pt, this message translates to:
+  /// **'Som'**
+  String get settingsSound;
+
+  /// No description provided for @soundTurnOn.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ligar o som'**
+  String get soundTurnOn;
+
+  /// No description provided for @soundTurnOff.
+  ///
+  /// In pt, this message translates to:
+  /// **'Desligar o som'**
+  String get soundTurnOff;
+
+  /// No description provided for @musicTurnOn.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ligar a música'**
+  String get musicTurnOn;
+
+  /// No description provided for @musicTurnOff.
+  ///
+  /// In pt, this message translates to:
+  /// **'Desligar a música'**
+  String get musicTurnOff;
+
+  /// No description provided for @music.
+  ///
+  /// In pt, this message translates to:
+  /// **'Música'**
+  String get music;
+
+  /// No description provided for @musicHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Trilha original, tocada pelo próprio jogo. Começa desligada.'**
+  String get musicHint;
+
+  /// No description provided for @themeToLight.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mudar para o modo claro'**
+  String get themeToLight;
+
+  /// No description provided for @themeToDark.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mudar para o modo escuro'**
+  String get themeToDark;
+
+  /// No description provided for @soundEffects.
+  ///
+  /// In pt, this message translates to:
+  /// **'Efeitos sonoros'**
+  String get soundEffects;
+
+  /// No description provided for @soundEffectsHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sons de acerto, erro, peças e pular. Começa desligado.'**
+  String get soundEffectsHint;
+
+  /// No description provided for @settingsSignedInAs.
+  ///
+  /// In pt, this message translates to:
+  /// **'Conectado como {email}'**
+  String settingsSignedInAs(String email);
+
+  /// No description provided for @themeTooltip.
+  ///
+  /// In pt, this message translates to:
+  /// **'Trocar tema (atual: {name})'**
+  String themeTooltip(String name);
+
+  /// No description provided for @themeFelt.
+  ///
+  /// In pt, this message translates to:
+  /// **'Feltro'**
+  String get themeFelt;
+
+  /// No description provided for @themeCosmic.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cósmico'**
+  String get themeCosmic;
+
+  /// No description provided for @themeMinimal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Minimalista'**
+  String get themeMinimal;
 
   /// No description provided for @levelEasy.
   ///
@@ -393,7 +765,8 @@ abstract class AppLocalizations {
   String get opEquals;
 }
 
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -402,7 +775,8 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['en', 'pt'].contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      <String>['en', 'pt'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;

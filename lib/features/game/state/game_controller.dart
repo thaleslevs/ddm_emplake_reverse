@@ -1,10 +1,15 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../data/solved_repository.dart';
+import 'solved_store.dart';
 
 import '../domain/judge.dart';
 import '../domain/latex.dart';
 import '../domain/level.dart';
+import '../domain/solver.dart';
 import '../domain/token.dart';
 
 class SolvedInfo {
@@ -65,9 +70,8 @@ class GameController extends Notifier<GameState> {
 
   final Level level;
   final _random = Random();
+  late final _solver = Solver(level);
   int _nextId = 0;
-
-  final _solvedNumbers = <String>{};
 
   @override
   GameState build() => _freshRound(round: 0);
@@ -85,11 +89,18 @@ class GameController extends Notifier<GameState> {
     );
   }
 
+  /// Sorteia até achar um número inédito que o [Solver] consiga resolver
+  /// neste nível. Se der azar demais (não deve acontecer), aceita o último.
   List<int> _drawDigits() {
-    while (true) {
+    final solved = ref.read(solvedProvider)[level]!;
+    List<int>? fallback;
+    for (var attempt = 0; attempt < 500; attempt++) {
       final digits = List.generate(4, (_) => _random.nextInt(10));
-      if (!_solvedNumbers.contains(digits.join())) return digits;
+      if (solved.contains(digits.join())) continue;
+      fallback = digits;
+      if (_solver.isSolvable(digits)) return digits;
     }
+    return fallback ?? List.generate(4, (_) => _random.nextInt(10));
   }
 
   void _setBoard(List<Token> board) {
@@ -136,12 +147,18 @@ class GameController extends Notifier<GameState> {
     final verdict = judge(state.board, digits: state.digits, level: level);
     SolvedInfo? solved;
     if (verdict is Correct) {
-      _solvedNumbers.add(state.number);
       solved = SolvedInfo(
         number: state.number,
         latex: equationToLatex(parseEquation(state.board)),
         value: verdict.value,
       );
+      ref.read(solvedProvider.notifier).add(level, solved.number);
+      // Sem esperar: se a gravação falhar, o jogo segue e o número só volta
+      // a poder ser sorteado depois de recarregar.
+      ref
+          .read(solvedRepositoryProvider)
+          ?.markSolved(level, solved.number, latex: solved.latex)
+          .catchError((Object e) => debugPrint('Falha ao salvar resolvido: $e'));
     }
     state = state.copyWith(verdict: () => verdict, solved: () => solved);
     return verdict;
