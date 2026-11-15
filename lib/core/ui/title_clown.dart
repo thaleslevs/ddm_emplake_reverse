@@ -6,11 +6,19 @@ import 'package:flutter/material.dart';
 import 'pixel_clown.dart';
 
 /// Palhaço neutro ao lado do título: parado, com uma respiração leve (o corpo
-/// sobe 1 pixel e volta; os pés ficam no chão).
+/// sobe 1 pixel e volta; os pés ficam no chão). [skin] e [colors] vêm da skin
+/// em uso (lado esquerdo ou direito).
 class TitleClown extends StatefulWidget {
-  const TitleClown({super.key, required this.colors, required this.unit, this.phase = 0});
+  const TitleClown({
+    super.key,
+    required this.colors,
+    required this.unit,
+    this.skin = ClownSkins.classic,
+    this.phase = 0,
+  });
 
   final ClownColors colors;
+  final ClownSkin skin;
 
   /// Tamanho de um pixel do desenho, em pixels lógicos.
   final double unit;
@@ -63,21 +71,22 @@ class _TitleClownState extends State<TitleClown> {
       // Uma linha a mais em cima para caber a subida da respiração.
       height: (PixelClown.rows(ClownLook.neutral) + 1) * u,
       child: RepaintBoundary(
-        child: CustomPaint(painter: _BreathingClownPainter(widget.colors, _lift)),
+        child: CustomPaint(painter: _BreathingClownPainter(widget.skin, widget.colors, _lift)),
       ),
     );
   }
 }
 
 class _BreathingClownPainter extends CustomPainter {
-  _BreathingClownPainter(this.colors, this.liftListenable) : super(repaint: liftListenable);
+  _BreathingClownPainter(this.skin, this.colors, this.liftListenable) : super(repaint: liftListenable);
 
+  final ClownSkin skin;
   final ClownColors colors;
   final ValueListenable<int> liftListenable;
 
   @override
   void paint(Canvas canvas, Size size) {
-    final rows = PixelClown.shape(ClownLook.neutral);
+    final rows = PixelClown.shape(ClownLook.neutral, skin);
     final u = size.width / rows.first.length;
     // Parado ou "inspirando" (corpo 1 pixel acima).
     final lift = liftListenable.value;
@@ -94,5 +103,5 @@ class _BreathingClownPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_BreathingClownPainter old) => old.colors != colors;
+  bool shouldRepaint(_BreathingClownPainter old) => old.colors != colors || old.skin != skin;
 }

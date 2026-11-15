@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../ranking/leaderboard_repository.dart';
 import '../data/solved_repository.dart';
 import 'solved_store.dart';
 
@@ -159,6 +160,10 @@ class GameController extends Notifier<GameState> {
           .read(solvedRepositoryProvider)
           ?.markSolved(level, solved.number, latex: solved.latex)
           .catchError((Object e) => debugPrint('Falha ao salvar resolvido: $e'));
+      ref
+          .read(leaderboardRepositoryProvider)
+          ?.addPoints(level.points)
+          .catchError((Object e) => debugPrint('Falha ao atualizar o ranking: $e'));
     }
     state = state.copyWith(verdict: () => verdict, solved: () => solved);
     return verdict;

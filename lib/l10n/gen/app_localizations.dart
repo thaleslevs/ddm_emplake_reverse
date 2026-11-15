@@ -230,6 +230,276 @@ abstract class AppLocalizations {
   /// **'Cada número resolvido vale pontos conforme o nível: Fácil 1, Intermediário 2, Avançado 3 e Difícil 5. A pontuação fica salva na sua conta.'**
   String get helpRuleScore;
 
+  /// No description provided for @helpRuleShop.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gaste pontos na Loja em skins para os palhaços e efeitos de acerto. O ranking conta todos os pontos que você já ganhou, mesmo os que gastou.'**
+  String get helpRuleShop;
+
+  /// No description provided for @navScores.
+  ///
+  /// In pt, this message translates to:
+  /// **'Placar'**
+  String get navScores;
+
+  /// No description provided for @navShop.
+  ///
+  /// In pt, this message translates to:
+  /// **'Loja'**
+  String get navShop;
+
+  /// No description provided for @cancel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cancelar'**
+  String get cancel;
+
+  /// No description provided for @save.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salvar'**
+  String get save;
+
+  /// No description provided for @earnedLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'{points, plural, =1{1 ponto ganho} other{{points} pontos ganhos}}'**
+  String earnedLabel(int points);
+
+  /// No description provided for @balanceLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'{points, plural, =1{Saldo: 1 ponto} other{Saldo: {points} pontos}}'**
+  String balanceLabel(int points);
+
+  /// No description provided for @scoresTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Placar'**
+  String get scoresTitle;
+
+  /// No description provided for @scoresRanking.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ranking geral'**
+  String get scoresRanking;
+
+  /// No description provided for @scoresMine.
+  ///
+  /// In pt, this message translates to:
+  /// **'Meus números'**
+  String get scoresMine;
+
+  /// No description provided for @rankingNickname.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seu apelido: {name}'**
+  String rankingNickname(String name);
+
+  /// No description provided for @rankingEditNickname.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mudar'**
+  String get rankingEditNickname;
+
+  /// No description provided for @rankingNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'O ranking usa todos os pontos que cada jogador já ganhou; gastar na loja não tira ninguém do lugar.'**
+  String get rankingNote;
+
+  /// No description provided for @rankingLoadError.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não deu para carregar o ranking.'**
+  String get rankingLoadError;
+
+  /// No description provided for @rankingEmpty.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ninguém pontuou ainda. Seja o primeiro!'**
+  String get rankingEmpty;
+
+  /// No description provided for @rankingYou.
+  ///
+  /// In pt, this message translates to:
+  /// **'você'**
+  String get rankingYou;
+
+  /// No description provided for @rankingPosition.
+  ///
+  /// In pt, this message translates to:
+  /// **'{position}º'**
+  String rankingPosition(int position);
+
+  /// No description provided for @nicknameDialogTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seu apelido no ranking'**
+  String get nicknameDialogTitle;
+
+  /// No description provided for @nicknameHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'De 1 a 20 caracteres'**
+  String get nicknameHint;
+
+  /// No description provided for @shopTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Loja'**
+  String get shopTitle;
+
+  /// No description provided for @shopSkins.
+  ///
+  /// In pt, this message translates to:
+  /// **'Skins dos palhaços'**
+  String get shopSkins;
+
+  /// No description provided for @shopEffects.
+  ///
+  /// In pt, this message translates to:
+  /// **'Efeito de acerto'**
+  String get shopEffects;
+
+  /// No description provided for @shopEffectsHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'O que aparece na tela quando você acerta. Toque em Testar para ver.'**
+  String get shopEffectsHint;
+
+  /// No description provided for @shopBuy.
+  ///
+  /// In pt, this message translates to:
+  /// **'{price, plural, =0{Grátis} other{Comprar · {price}}}'**
+  String shopBuy(int price);
+
+  /// No description provided for @shopMissing.
+  ///
+  /// In pt, this message translates to:
+  /// **'{points, plural, =1{Falta 1} other{Faltam {points}}}'**
+  String shopMissing(int points);
+
+  /// No description provided for @shopEquip.
+  ///
+  /// In pt, this message translates to:
+  /// **'Usar'**
+  String get shopEquip;
+
+  /// No description provided for @shopEquipped.
+  ///
+  /// In pt, this message translates to:
+  /// **'Em uso'**
+  String get shopEquipped;
+
+  /// No description provided for @shopTry.
+  ///
+  /// In pt, this message translates to:
+  /// **'Testar'**
+  String get shopTry;
+
+  /// No description provided for @shopBought.
+  ///
+  /// In pt, this message translates to:
+  /// **'Comprado! Já está em uso.'**
+  String get shopBought;
+
+  /// No description provided for @shopNotEnough.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pontos insuficientes.'**
+  String get shopNotEnough;
+
+  /// No description provided for @shopBuyError.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não deu para concluir a compra. Tente de novo.'**
+  String get shopBuyError;
+
+  /// No description provided for @skinClassic.
+  ///
+  /// In pt, this message translates to:
+  /// **'Clássico'**
+  String get skinClassic;
+
+  /// No description provided for @skinWizard.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mago'**
+  String get skinWizard;
+
+  /// No description provided for @skinRobot.
+  ///
+  /// In pt, this message translates to:
+  /// **'Robô'**
+  String get skinRobot;
+
+  /// No description provided for @skinPirate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pirata'**
+  String get skinPirate;
+
+  /// No description provided for @skinNinja.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ninja'**
+  String get skinNinja;
+
+  /// No description provided for @skinAstronaut.
+  ///
+  /// In pt, this message translates to:
+  /// **'Astronauta'**
+  String get skinAstronaut;
+
+  /// No description provided for @skinSkeleton.
+  ///
+  /// In pt, this message translates to:
+  /// **'Caveira'**
+  String get skinSkeleton;
+
+  /// No description provided for @effectClowns.
+  ///
+  /// In pt, this message translates to:
+  /// **'Palhaços'**
+  String get effectClowns;
+
+  /// No description provided for @effectConfetti.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confete'**
+  String get effectConfetti;
+
+  /// No description provided for @effectStars.
+  ///
+  /// In pt, this message translates to:
+  /// **'Estrelas'**
+  String get effectStars;
+
+  /// No description provided for @effectCoins.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chuva de moedas'**
+  String get effectCoins;
+
+  /// No description provided for @effectFireworks.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fogos de artifício'**
+  String get effectFireworks;
+
+  /// No description provided for @musicVolume.
+  ///
+  /// In pt, this message translates to:
+  /// **'Volume da música'**
+  String get musicVolume;
+
+  /// No description provided for @soundVolume.
+  ///
+  /// In pt, this message translates to:
+  /// **'Volume dos efeitos'**
+  String get soundVolume;
+
   /// No description provided for @scoreTitle.
   ///
   /// In pt, this message translates to:

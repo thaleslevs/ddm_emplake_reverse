@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/theme/game_palette.dart';
 import '../../../l10n/gen/app_localizations.dart';
-import '../state/solved_store.dart';
+import '../../shop/account.dart';
 
-/// Pontuação do jogador; dá um pulinho quando sobe.
+/// Pontos disponíveis para gastar na loja; dá um pulinho quando muda.
 class ScoreBadge extends ConsumerWidget {
   const ScoreBadge({super.key});
 
@@ -14,9 +14,9 @@ class ScoreBadge extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final p = GamePalette.of(context);
-    final score = ref.watch(scoreProvider);
+    final score = ref.watch(balanceProvider);
     return Semantics(
-      label: l10n.scoreLabel(score),
+      label: l10n.balanceLabel(score),
       child: ExcludeSemantics(
         child: Container(
           padding: const EdgeInsets.fromLTRB(10, 4, 12, 4),

@@ -44,6 +44,8 @@ class AppSettings {
     this.textSize = TextSizeOption.medium,
     this.soundEnabled = false,
     this.musicEnabled = false,
+    this.soundVolume = 0.8,
+    this.musicVolume = 0.6,
   });
 
   /// Começa seguindo o tema do dispositivo.
@@ -59,6 +61,10 @@ class AppSettings {
   /// Música de fundo, separada dos efeitos; desligada por padrão.
   final bool musicEnabled;
 
+  /// Volumes de 0 a 1, independentes.
+  final double soundVolume;
+  final double musicVolume;
+
   AppSettings copyWith({
     ThemeMode? themeMode,
     ThemeVariant? variant,
@@ -67,6 +73,8 @@ class AppSettings {
     TextSizeOption? textSize,
     bool? soundEnabled,
     bool? musicEnabled,
+    double? soundVolume,
+    double? musicVolume,
   }) => AppSettings(
     themeMode: themeMode ?? this.themeMode,
     variant: variant ?? this.variant,
@@ -75,6 +83,8 @@ class AppSettings {
     textSize: textSize ?? this.textSize,
     soundEnabled: soundEnabled ?? this.soundEnabled,
     musicEnabled: musicEnabled ?? this.musicEnabled,
+    soundVolume: soundVolume ?? this.soundVolume,
+    musicVolume: musicVolume ?? this.musicVolume,
   );
 }
 
@@ -89,6 +99,8 @@ class SettingsController extends Notifier<AppSettings> {
   static const _size = 'settings.textSize';
   static const _sound = 'settings.sound';
   static const _music = 'settings.music';
+  static const _soundVolume = 'settings.soundVolume';
+  static const _musicVolume = 'settings.musicVolume';
 
   @override
   AppSettings build() {
@@ -104,6 +116,8 @@ class SettingsController extends Notifier<AppSettings> {
       textSize: pick(TextSizeOption.values, _size, TextSizeOption.medium),
       soundEnabled: prefs.getBool(_sound) ?? false,
       musicEnabled: prefs.getBool(_music) ?? false,
+      soundVolume: (prefs.getDouble(_soundVolume) ?? 0.8).clamp(0.0, 1.0),
+      musicVolume: (prefs.getDouble(_musicVolume) ?? 0.6).clamp(0.0, 1.0),
     );
   }
 
@@ -142,6 +156,16 @@ class SettingsController extends Notifier<AppSettings> {
   void setMusicEnabled(bool enabled) {
     state = state.copyWith(musicEnabled: enabled);
     ref.read(sharedPreferencesProvider).setBool(_music, enabled);
+  }
+
+  void setSoundVolume(double volume) {
+    state = state.copyWith(soundVolume: volume);
+    ref.read(sharedPreferencesProvider).setDouble(_soundVolume, volume);
+  }
+
+  void setMusicVolume(double volume) {
+    state = state.copyWith(musicVolume: volume);
+    ref.read(sharedPreferencesProvider).setDouble(_musicVolume, volume);
   }
 
   /// Alterna entre claro e escuro a partir do que está na tela agora (se o

@@ -86,6 +86,180 @@ class AppLocalizationsPt extends AppLocalizations {
       'Cada número resolvido vale pontos conforme o nível: Fácil 1, Intermediário 2, Avançado 3 e Difícil 5. A pontuação fica salva na sua conta.';
 
   @override
+  String get helpRuleShop =>
+      'Gaste pontos na Loja em skins para os palhaços e efeitos de acerto. O ranking conta todos os pontos que você já ganhou, mesmo os que gastou.';
+
+  @override
+  String get navScores => 'Placar';
+
+  @override
+  String get navShop => 'Loja';
+
+  @override
+  String get cancel => 'Cancelar';
+
+  @override
+  String get save => 'Salvar';
+
+  @override
+  String earnedLabel(int points) {
+    String _temp0 = intl.Intl.pluralLogic(
+      points,
+      locale: localeName,
+      other: '$points pontos ganhos',
+      one: '1 ponto ganho',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String balanceLabel(int points) {
+    String _temp0 = intl.Intl.pluralLogic(
+      points,
+      locale: localeName,
+      other: 'Saldo: $points pontos',
+      one: 'Saldo: 1 ponto',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get scoresTitle => 'Placar';
+
+  @override
+  String get scoresRanking => 'Ranking geral';
+
+  @override
+  String get scoresMine => 'Meus números';
+
+  @override
+  String rankingNickname(String name) {
+    return 'Seu apelido: $name';
+  }
+
+  @override
+  String get rankingEditNickname => 'Mudar';
+
+  @override
+  String get rankingNote =>
+      'O ranking usa todos os pontos que cada jogador já ganhou; gastar na loja não tira ninguém do lugar.';
+
+  @override
+  String get rankingLoadError => 'Não deu para carregar o ranking.';
+
+  @override
+  String get rankingEmpty => 'Ninguém pontuou ainda. Seja o primeiro!';
+
+  @override
+  String get rankingYou => 'você';
+
+  @override
+  String rankingPosition(int position) {
+    return '$positionº';
+  }
+
+  @override
+  String get nicknameDialogTitle => 'Seu apelido no ranking';
+
+  @override
+  String get nicknameHint => 'De 1 a 20 caracteres';
+
+  @override
+  String get shopTitle => 'Loja';
+
+  @override
+  String get shopSkins => 'Skins dos palhaços';
+
+  @override
+  String get shopEffects => 'Efeito de acerto';
+
+  @override
+  String get shopEffectsHint =>
+      'O que aparece na tela quando você acerta. Toque em Testar para ver.';
+
+  @override
+  String shopBuy(int price) {
+    String _temp0 = intl.Intl.pluralLogic(
+      price,
+      locale: localeName,
+      other: 'Comprar · $price',
+      zero: 'Grátis',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String shopMissing(int points) {
+    String _temp0 = intl.Intl.pluralLogic(
+      points,
+      locale: localeName,
+      other: 'Faltam $points',
+      one: 'Falta 1',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get shopEquip => 'Usar';
+
+  @override
+  String get shopEquipped => 'Em uso';
+
+  @override
+  String get shopTry => 'Testar';
+
+  @override
+  String get shopBought => 'Comprado! Já está em uso.';
+
+  @override
+  String get shopNotEnough => 'Pontos insuficientes.';
+
+  @override
+  String get shopBuyError => 'Não deu para concluir a compra. Tente de novo.';
+
+  @override
+  String get skinClassic => 'Clássico';
+
+  @override
+  String get skinWizard => 'Mago';
+
+  @override
+  String get skinRobot => 'Robô';
+
+  @override
+  String get skinPirate => 'Pirata';
+
+  @override
+  String get skinNinja => 'Ninja';
+
+  @override
+  String get skinAstronaut => 'Astronauta';
+
+  @override
+  String get skinSkeleton => 'Caveira';
+
+  @override
+  String get effectClowns => 'Palhaços';
+
+  @override
+  String get effectConfetti => 'Confete';
+
+  @override
+  String get effectStars => 'Estrelas';
+
+  @override
+  String get effectCoins => 'Chuva de moedas';
+
+  @override
+  String get effectFireworks => 'Fogos de artifício';
+
+  @override
+  String get musicVolume => 'Volume da música';
+
+  @override
+  String get soundVolume => 'Volume dos efeitos';
+
+  @override
   String get scoreTitle => 'Pontos';
 
   @override

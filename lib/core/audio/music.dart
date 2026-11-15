@@ -3,11 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../settings/app_settings.dart';
 import 'music_player.dart';
 
-/// Liga e desliga a música de fundo conforme a opção das configurações.
-/// Precisa ser observado uma vez no topo do app para existir.
+/// Liga, desliga e ajusta o volume da música de fundo conforme as
+/// configurações. Precisa ser observado uma vez no topo do app para existir.
 final musicProvider = Provider<Music>((ref) {
   final music = Music();
   ref
+    ..listen(
+      settingsProvider.select((s) => s.musicVolume),
+      (_, volume) => music.player.setVolume(volume),
+      fireImmediately: true,
+    )
     ..listen(
       settingsProvider.select((s) => s.musicEnabled),
       (_, enabled) => enabled ? music.player.start() : music.player.stop(),

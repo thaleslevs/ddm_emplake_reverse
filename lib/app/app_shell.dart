@@ -9,7 +9,7 @@ import '../l10n/gen/app_localizations.dart';
 import 'help_dialog.dart';
 
 /// Moldura das páginas depois do login: o fundo do jogo (um só) e a navbar curva
-/// (Jogar, Histórico, Ajuda, Configurações).
+/// (Jogar, Placar, Loja, Ajuda, Configurações).
 ///
 /// A Ajuda não é uma aba: abre um diálogo e a navbar fica onde estava.
 class AppShell extends StatelessWidget {
@@ -20,9 +20,9 @@ class AppShell extends StatelessWidget {
   /// Altura da navbar; as páginas reservam esse espaço embaixo.
   static const navBarHeight = 64.0;
 
-  static const _helpSlot = 2;
+  static const _helpSlot = 3;
 
-  /// Posição na navbar de cada ramo do shell (a Ajuda ocupa o slot 2).
+  /// Posição na navbar de cada ramo do shell (a Ajuda ocupa o slot 3).
   static int _slotOf(int branch) => branch < _helpSlot ? branch : branch + 1;
   static int _branchOf(int slot) => slot < _helpSlot ? slot : slot - 1;
 
@@ -33,7 +33,8 @@ class AppShell extends StatelessWidget {
     final current = _slotOf(shell.currentIndex);
     final items = [
       (Icons.grid_view_rounded, l10n.navPlay),
-      (Icons.history_rounded, l10n.navHistory),
+      (Icons.emoji_events_rounded, l10n.navScores),
+      (Icons.storefront_rounded, l10n.navShop),
       (Icons.help_outline_rounded, l10n.navHelp),
       (Icons.settings_rounded, l10n.navSettings),
     ];

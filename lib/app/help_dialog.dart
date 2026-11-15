@@ -20,6 +20,7 @@ Future<void> showHelpDialog(BuildContext context) {
         l10n.helpRuleLevels,
         l10n.helpRuleSolved,
         l10n.helpRuleScore,
+        l10n.helpRuleShop,
       ];
       return AlertDialog(
         backgroundColor: p.panel,

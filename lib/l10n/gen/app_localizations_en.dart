@@ -86,6 +86,180 @@ class AppLocalizationsEn extends AppLocalizations {
       'Every solved number is worth points by level: Easy 1, Intermediate 2, Advanced 3 and Hard 5. Your score is saved to your account.';
 
   @override
+  String get helpRuleShop =>
+      'Spend points in the Shop on clown skins and win effects. The ranking counts every point you have ever earned, even the ones you spent.';
+
+  @override
+  String get navScores => 'Scores';
+
+  @override
+  String get navShop => 'Shop';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String earnedLabel(int points) {
+    String _temp0 = intl.Intl.pluralLogic(
+      points,
+      locale: localeName,
+      other: '$points points earned',
+      one: '1 point earned',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String balanceLabel(int points) {
+    String _temp0 = intl.Intl.pluralLogic(
+      points,
+      locale: localeName,
+      other: 'Balance: $points points',
+      one: 'Balance: 1 point',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get scoresTitle => 'Scores';
+
+  @override
+  String get scoresRanking => 'Global ranking';
+
+  @override
+  String get scoresMine => 'My numbers';
+
+  @override
+  String rankingNickname(String name) {
+    return 'Your nickname: $name';
+  }
+
+  @override
+  String get rankingEditNickname => 'Change';
+
+  @override
+  String get rankingNote =>
+      'The ranking uses every point each player has ever earned; spending in the shop doesn\'t drop anyone.';
+
+  @override
+  String get rankingLoadError => 'Couldn\'t load the ranking.';
+
+  @override
+  String get rankingEmpty => 'Nobody has scored yet. Be the first!';
+
+  @override
+  String get rankingYou => 'you';
+
+  @override
+  String rankingPosition(int position) {
+    return '#$position';
+  }
+
+  @override
+  String get nicknameDialogTitle => 'Your ranking nickname';
+
+  @override
+  String get nicknameHint => '1 to 20 characters';
+
+  @override
+  String get shopTitle => 'Shop';
+
+  @override
+  String get shopSkins => 'Clown skins';
+
+  @override
+  String get shopEffects => 'Win effect';
+
+  @override
+  String get shopEffectsHint =>
+      'What shows up on screen when you solve a number. Tap Try to see it.';
+
+  @override
+  String shopBuy(int price) {
+    String _temp0 = intl.Intl.pluralLogic(
+      price,
+      locale: localeName,
+      other: 'Buy · $price',
+      zero: 'Free',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String shopMissing(int points) {
+    String _temp0 = intl.Intl.pluralLogic(
+      points,
+      locale: localeName,
+      other: '$points more needed',
+      one: '1 more needed',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get shopEquip => 'Use';
+
+  @override
+  String get shopEquipped => 'In use';
+
+  @override
+  String get shopTry => 'Try';
+
+  @override
+  String get shopBought => 'Bought! It\'s now in use.';
+
+  @override
+  String get shopNotEnough => 'Not enough points.';
+
+  @override
+  String get shopBuyError => 'Couldn\'t complete the purchase. Try again.';
+
+  @override
+  String get skinClassic => 'Classic';
+
+  @override
+  String get skinWizard => 'Wizard';
+
+  @override
+  String get skinRobot => 'Robot';
+
+  @override
+  String get skinPirate => 'Pirate';
+
+  @override
+  String get skinNinja => 'Ninja';
+
+  @override
+  String get skinAstronaut => 'Astronaut';
+
+  @override
+  String get skinSkeleton => 'Skeleton';
+
+  @override
+  String get effectClowns => 'Clowns';
+
+  @override
+  String get effectConfetti => 'Confetti';
+
+  @override
+  String get effectStars => 'Stars';
+
+  @override
+  String get effectCoins => 'Coin rain';
+
+  @override
+  String get effectFireworks => 'Fireworks';
+
+  @override
+  String get musicVolume => 'Music volume';
+
+  @override
+  String get soundVolume => 'Effects volume';
+
+  @override
   String get scoreTitle => 'Score';
 
   @override

@@ -28,6 +28,21 @@ class MusicPlayer {
 
   bool get isPlaying => _timer != null;
 
+  /// Volume escolhido pelo jogador (0 a 1), por cima do volume base da trilha.
+  double _level = 1;
+
+  double get _target => math.max(0.0001, _volume * _level);
+
+  void setVolume(double level) {
+    _level = level;
+    final ctx = _ctx;
+    if (!isPlaying || ctx == null) return;
+    final now = ctx.currentTime;
+    _master!.gain
+      ..cancelScheduledValues(now)
+      ..setTargetAtTime(_target, now, 0.05);
+  }
+
   /// Os navegadores só liberam áudio depois de um toque: chamado a cada
   /// toque na tela, retoma o contexto se a música estiver ligada e travada.
   void unlock() {
@@ -44,7 +59,7 @@ class MusicPlayer {
       _master!.gain
         ..cancelScheduledValues(now)
         ..setValueAtTime(0.0001, now)
-        ..exponentialRampToValueAtTime(_volume, now + 1.2);
+        ..exponentialRampToValueAtTime(_target, now + 1.2);
       _nextStepTime = now + 0.1;
       _step = 0;
       _loop = 0;
@@ -64,7 +79,7 @@ class MusicPlayer {
     // sem estalo.
     _master!.gain
       ..cancelScheduledValues(now)
-      ..setValueAtTime(_volume, now)
+      ..setValueAtTime(_target, now)
       ..exponentialRampToValueAtTime(0.0001, now + 0.5);
   }
 

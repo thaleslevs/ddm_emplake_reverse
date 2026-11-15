@@ -9,9 +9,12 @@ import 'title_clown.dart';
 const _snap = Duration(milliseconds: 90);
 
 class GameTitle extends StatelessWidget {
-  const GameTitle(this.text, {super.key});
+  const GameTitle(this.text, {super.key, this.skin = ClownSkins.classic});
 
   final String text;
+
+  /// Skin dos dois palhaços ao lado do título.
+  final ClownSkin skin;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,7 @@ class GameTitle extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          TitleClown(colors: ClownColors.green, unit: clownUnit),
+          TitleClown(skin: skin, colors: skin.left, unit: clownUnit),
           SizedBox(width: size * 0.2),
           _Ornament(color: p.gold, mirrored: false),
           SizedBox(width: size * 0.3),
@@ -34,7 +37,7 @@ class GameTitle extends StatelessWidget {
           SizedBox(width: size * 0.3),
           _Ornament(color: p.gold, mirrored: true),
           SizedBox(width: size * 0.2),
-          TitleClown(colors: ClownColors.purple, unit: clownUnit, phase: 0.5),
+          TitleClown(skin: skin, colors: skin.right, unit: clownUnit, phase: 0.5),
         ],
       ),
     );

@@ -13,15 +13,15 @@ import '../game/state/solved_store.dart';
 import '../game/ui/game_texts.dart';
 
 /// Números resolvidos pelo jogador, do mais recente para o mais antigo, com a
-/// igualdade que ele montou.
-class HistoryPage extends ConsumerStatefulWidget {
-  const HistoryPage({super.key});
+/// igualdade que ele montou (dentro da aba Placar).
+class HistoryList extends ConsumerStatefulWidget {
+  const HistoryList({super.key});
 
   @override
-  ConsumerState<HistoryPage> createState() => _HistoryPageState();
+  ConsumerState<HistoryList> createState() => _HistoryListState();
 }
 
-class _HistoryPageState extends ConsumerState<HistoryPage> {
+class _HistoryListState extends ConsumerState<HistoryList> {
   Future<List<SolvedEntry>>? _future;
   int _loadedFor = -1;
 
@@ -30,39 +30,15 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
     final l10n = AppLocalizations.of(context);
     final repository = ref.watch(solvedRepositoryProvider);
     // A aba fica viva no shell: recarrega quando o jogador resolve mais um.
-    final solvedCount = ref.watch(solvedProvider.select((s) => s.values.fold(0, (n, set) => n + set.length)));
+    final solvedCount = ref.watch(solvedCountProvider);
     if (repository != null && (_future == null || solvedCount != _loadedFor)) {
       _loadedFor = solvedCount;
       _future = repository.history();
     }
 
-    final p = GamePalette.of(context);
-    return PageFrame(
-      title: l10n.historyTitle,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16),
-          child: GamePanel(
-            child: Row(
-              children: [
-                Icon(Icons.star_rounded, color: p.gold, size: 32),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(l10n.scoreLabel(ref.watch(scoreProvider)), style: GameType.display(28, p.gold)),
-                      Text(
-                        l10n.historySolvedCount(solvedCount),
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: p.textMuted),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
         FutureBuilder<List<SolvedEntry>>(
           future: _future,
           builder: (context, snapshot) {

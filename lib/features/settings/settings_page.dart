@@ -120,6 +120,11 @@ class SettingsPage extends ConsumerWidget {
                 value: settings.musicEnabled,
                 onChanged: controller.setMusicEnabled,
               ),
+              _VolumeSlider(
+                label: l10n.musicVolume,
+                value: settings.musicVolume,
+                onChanged: controller.setMusicVolume,
+              ),
               const SizedBox(height: 12),
               _SwitchRow(
                 title: l10n.soundEffects,
@@ -130,6 +135,13 @@ class SettingsPage extends ConsumerWidget {
                   // Amostra ao ligar, para o jogador ouvir o volume.
                   if (on) ref.read(soundsProvider).preview(GameSound.correct);
                 },
+              ),
+              _VolumeSlider(
+                label: l10n.soundVolume,
+                value: settings.soundVolume,
+                onChanged: controller.setSoundVolume,
+                // Ao soltar, toca uma amostra no volume novo.
+                onChangeEnd: (_) => ref.read(soundsProvider).preview(GameSound.place),
               ),
             ],
           ),
@@ -203,6 +215,42 @@ class _SwitchRow extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         Switch(value: value, activeThumbColor: p.ink, activeTrackColor: p.gold, onChanged: onChanged),
+      ],
+    );
+  }
+}
+
+class _VolumeSlider extends StatelessWidget {
+  const _VolumeSlider({required this.label, required this.value, required this.onChanged, this.onChangeEnd});
+
+  final String label;
+  final double value;
+  final ValueChanged<double> onChanged;
+  final ValueChanged<double>? onChangeEnd;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = GamePalette.of(context);
+    final percent = '${(value * 100).round()}%';
+    return Row(
+      children: [
+        Icon(value == 0 ? Icons.volume_off_rounded : Icons.volume_down_rounded, size: 18, color: p.textMuted),
+        Expanded(
+          child: Slider(
+            value: value,
+            divisions: 20,
+            label: percent,
+            semanticFormatterCallback: (_) => '$label $percent',
+            activeColor: p.gold,
+            inactiveColor: p.border,
+            onChanged: onChanged,
+            onChangeEnd: onChangeEnd,
+          ),
+        ),
+        SizedBox(
+          width: 44,
+          child: Text(percent, textAlign: TextAlign.end, style: TextStyle(color: p.textMuted)),
+        ),
       ],
     );
   }

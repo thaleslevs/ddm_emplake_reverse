@@ -4,7 +4,7 @@ import '../settings/app_settings.dart';
 import 'game_sound.dart';
 import 'sound_player.dart';
 
-/// Toca efeitos sonoros só se o jogador ligou o som nas configurações.
+/// Toca efeitos sonoros só se o jogador ligou o som, no volume escolhido.
 final soundsProvider = Provider<Sounds>(Sounds.new);
 
 class Sounds {
@@ -14,9 +14,10 @@ class Sounds {
   final _player = SoundPlayer();
 
   void play(GameSound sound) {
-    if (_ref.read(settingsProvider).soundEnabled) _player.play(sound);
+    final settings = _ref.read(settingsProvider);
+    if (settings.soundEnabled) _player.play(sound, volume: settings.soundVolume);
   }
 
-  /// Toca mesmo com o som desligado (amostra ao ligar a opção).
-  void preview(GameSound sound) => _player.play(sound);
+  /// Toca mesmo com o som desligado (amostra ao ligar ou ao ajustar o volume).
+  void preview(GameSound sound) => _player.play(sound, volume: _ref.read(settingsProvider).soundVolume);
 }

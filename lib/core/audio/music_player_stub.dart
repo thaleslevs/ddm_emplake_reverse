@@ -4,4 +4,5 @@ class MusicPlayer {
   void unlock() {}
   void start() {}
   void stop() {}
+  void setVolume(double level) {}
 }

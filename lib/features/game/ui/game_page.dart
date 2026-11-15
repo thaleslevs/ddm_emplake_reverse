@@ -14,6 +14,7 @@ import '../domain/latex.dart';
 import '../domain/level.dart';
 import '../domain/token.dart';
 import '../state/game_controller.dart';
+import '../../shop/account.dart';
 import 'clown_burst.dart';
 import 'drag_support.dart';
 import 'expression_board.dart';
@@ -25,12 +26,9 @@ import 'score_badge.dart';
 import 'verdict_banner.dart';
 
 class GamePage extends ConsumerStatefulWidget {
-  const GamePage({super.key, this.initialLevel = Level.easy, this.loadFailed = false});
+  const GamePage({super.key, this.initialLevel = Level.easy});
 
   final Level initialLevel;
-
-  /// Os resolvidos não carregaram do Firestore: avisa o jogador uma vez.
-  final bool loadFailed;
 
   @override
   ConsumerState<GamePage> createState() => _GamePageState();
@@ -49,19 +47,6 @@ class _GamePageState extends ConsumerState<GamePage> {
   int _reactions = 0;
 
   GameController get _controller => ref.read(gameControllerProvider(_level).notifier);
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.loadFailed) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).solvedLoadError)),
-        );
-      });
-    }
-  }
 
   @override
   void dispose() {
@@ -150,7 +135,7 @@ class _GamePageState extends ConsumerState<GamePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          GameTitle(l10n.appTitle),
+                          GameTitle(l10n.appTitle, skin: ref.watch(equippedSkinProvider)),
                           const SizedBox(height: 8),
                           const Center(child: ScoreBadge()),
                           SizedBox(height: wide ? 20 : 14),

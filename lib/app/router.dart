@@ -9,18 +9,22 @@ import '../features/auth/login_page.dart';
 import '../features/game/state/game_controller.dart';
 import '../features/game/state/solved_store.dart';
 import '../features/game/ui/play_tab.dart';
-import '../features/history/history_page.dart';
+import '../features/ranking/scores_page.dart';
 import '../features/settings/settings_page.dart';
+import '../features/shop/account.dart';
+import '../features/shop/shop_page.dart';
+import 'account_gate.dart';
 import 'app_shell.dart';
 
 abstract final class AppRoutes {
   static const login = '/login';
   static const play = '/play';
-  static const history = '/history';
+  static const scores = '/scores';
+  static const shop = '/shop';
   static const settings = '/settings';
 
   /// Abas da navbar, na ordem dos ramos do shell.
-  static const tabs = [play, history, settings];
+  static const tabs = [play, scores, shop, settings];
 }
 
 const _lastRouteKey = 'lastRoute';
@@ -41,7 +45,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (previous?.value?.uid != next.value?.uid) {
         ref
           ..invalidate(gameControllerProvider)
-          ..invalidate(solvedProvider);
+          ..invalidate(solvedProvider)
+          ..invalidate(accountProvider);
       }
       authChanged.value++;
     })
@@ -67,13 +72,16 @@ final routerProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(path: AppRoutes.login, builder: (context, state) => const LoginPage()),
       StatefulShellRoute.indexedStack(
-        builder: (context, state, shell) => AppShell(shell: shell),
+        builder: (context, state, shell) => AccountGate(child: AppShell(shell: shell)),
         branches: [
           StatefulShellBranch(
             routes: [GoRoute(path: AppRoutes.play, builder: (context, state) => const PlayTab())],
           ),
           StatefulShellBranch(
-            routes: [GoRoute(path: AppRoutes.history, builder: (context, state) => const HistoryPage())],
+            routes: [GoRoute(path: AppRoutes.scores, builder: (context, state) => const ScoresPage())],
+          ),
+          StatefulShellBranch(
+            routes: [GoRoute(path: AppRoutes.shop, builder: (context, state) => const ShopPage())],
           ),
           StatefulShellBranch(
             routes: [GoRoute(path: AppRoutes.settings, builder: (context, state) => const SettingsPage())],
