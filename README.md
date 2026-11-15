@@ -26,7 +26,7 @@ A fórmula aparece em LaTeX logo abaixo da expressão. Os números resolvidos fi
 - **Login** (`lib/features/auth/`): `firebase_ui_auth` com e-mail/senha e Google, nomes do grupo e seletor de idioma com bandeiras.
 - **Idiomas** (`lib/l10n/`): português e inglês em todos os textos, inclusive os do `firebase_ui`. O código gerado já está em `lib/l10n/gen/`.
 - **Navegação** (`lib/app/`): `go_router` e `curved_navigation_bar` em todas as páginas depois do login: Jogar, Placar, Loja, Ajuda (`showDialog`) e Configurações. O app reabre na última página visitada (`SharedPreferences`).
-- **Configurações** (`lib/features/settings/`): modo claro/escuro/sistema, tamanho e tipo da fonte, cor semente, temas prontos, música e efeitos sonoros (desligados por padrão) com volume separado.
+- **Configurações** (`lib/features/settings/`): modo claro/escuro/sistema, tamanho e tipo da fonte, cor semente, temas prontos, música e efeitos sonoros (desligados por padrão) com volume separado. Os botões de música e som no canto superior direito ligam e desligam cada um, e mostram a barra de volume ao passar o mouse (no celular, com um toque longo).
 - **Estado:** Riverpod (`lib/features/*/state/`, `lib/core/settings/`).
 - **Firestore:** carregado com `FutureBuilder` e indicador de progresso customizado (`lib/app/account_gate.dart`, `lib/features/ranking/scores_page.dart`).
 - **Pular número**, layout responsivo e animações (peças, reações dos palhaços, efeitos de acerto).
