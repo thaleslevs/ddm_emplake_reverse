@@ -39,8 +39,10 @@ Com o Flutter 3.50 (Dart 3.14) ou mais novo:
 
 ```bash
 flutter pub get
-flutter run -d chrome
+flutter run -d chrome --web-port 8080
 ```
+
+Use a porta **8080** (ou 8090). A chave do Firebase só aceita o site publicado e essas duas portas locais; em outra porta, o login e o Firestore não funcionam.
 
 Os testes ficam em `test/`:
 
@@ -56,4 +58,4 @@ O app não usa assets próprios: fontes, sons, música e desenhos são gerados p
 flutter pub add flutter_riverpod go_router shared_preferences firebase_core firebase_auth firebase_ui_auth firebase_ui_oauth_google firebase_ui_localizations cloud_firestore intl curved_navigation_bar flutter_math_fork loading_animation_widget flex_color_scheme google_fonts flutter_animate country_flags web "flutter_localizations:{\"sdk\":\"flutter\"}"
 ```
 
-Para o login com Google rodar fora do site publicado, o endereço local precisa estar liberado no Firebase (por padrão, `localhost:8080` e `localhost:8090`).
+Depois, rode com `flutter run -d chrome --web-port 8080`, pelo mesmo motivo de antes: a chave do Firebase só aceita `localhost:8080`, `localhost:8090` e o site publicado.
