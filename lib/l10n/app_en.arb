@@ -138,6 +138,8 @@
   "gameCheck": "Check",
   "gameClear": "Clear",
   "gameSkip": "Skip",
+  "gameNext": "Next number",
+  "solvedDialogTitle": "You got it!",
   "gameNumberLabel": "Number {number}",
 
   "verdictCorrect": "Correct! Both sides equal {value}.",

@@ -462,6 +462,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gameSkip => 'Skip';
 
   @override
+  String get gameNext => 'Next number';
+
+  @override
+  String get solvedDialogTitle => 'You got it!';
+
+  @override
   String gameNumberLabel(String number) {
     return 'Number $number';
   }

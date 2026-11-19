@@ -149,6 +149,8 @@
   "gameCheck": "Verificar",
   "gameClear": "Limpar",
   "gameSkip": "Pular",
+  "gameNext": "Próximo número",
+  "solvedDialogTitle": "Acertou!",
   "gameNumberLabel": "Número {number}",
   "@gameNumberLabel": { "placeholders": { "number": { "type": "String" } } },
 

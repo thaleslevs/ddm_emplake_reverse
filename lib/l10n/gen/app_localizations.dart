@@ -836,6 +836,18 @@ abstract class AppLocalizations {
   /// **'Pular'**
   String get gameSkip;
 
+  /// No description provided for @gameNext.
+  ///
+  /// In pt, this message translates to:
+  /// **'Próximo número'**
+  String get gameNext;
+
+  /// No description provided for @solvedDialogTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Acertou!'**
+  String get solvedDialogTitle;
+
   /// No description provided for @gameNumberLabel.
   ///
   /// In pt, this message translates to:

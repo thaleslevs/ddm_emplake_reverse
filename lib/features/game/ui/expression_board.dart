@@ -30,13 +30,21 @@ class _ExpressionBoardState extends ConsumerState<ExpressionBoard> {
   List<Token> _visible(List<Token> board) =>
       _draggingId == null ? board : board.where((t) => t.id != _draggingId).toList();
 
-  int _indexFor(double globalX, List<Token> visible) {
+  /// Posição de inserção na ordem de leitura: conta as peças que ficam antes
+  /// do ponteiro (linhas de cima inteiras e, na mesma linha, as da esquerda).
+  /// Funciona também quando a expressão quebra em várias linhas.
+  int _indexFor(Offset global, List<Token> visible) {
     var index = 0;
     for (final token in visible) {
       final box = widget.keys.board(token.id).currentContext?.findRenderObject();
       if (box is! RenderBox || !box.hasSize) continue;
-      final centre = box.localToGlobal(box.size.center(Offset.zero)).dx;
-      if (centre < globalX) index++;
+      final rect = box.localToGlobal(Offset.zero) & box.size;
+      final before = rect.bottom < global.dy
+          ? true
+          : rect.top > global.dy
+          ? false
+          : rect.center.dx < global.dx;
+      if (before) index++;
     }
     return index;
   }
@@ -69,15 +77,17 @@ class _ExpressionBoardState extends ConsumerState<ExpressionBoard> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final slots = visible.length + (_hoverIndex != null ? 1 : 0) + 0.5;
-        final tile = ((constraints.maxWidth - 28) / (slots * 1.08)).clamp(26.0, 64.0);
+        // Encolhe as peças para caber numa linha; abaixo de 30 px, quebra a
+        // expressão em mais linhas em vez de estourar a tela.
+        final tile = ((constraints.maxWidth - 28) / (slots * 1.08)).clamp(30.0, 64.0);
         final spacing = tile * 0.08;
 
         return DragTarget<PiecePayload>(
           onWillAcceptWithDetails: (_) => true,
-          onMove: (details) => _setHover(_indexFor(details.offset.dx, visible)),
+          onMove: (details) => _setHover(_indexFor(details.offset, visible)),
           onLeave: (_) => _setHover(null),
           onAcceptWithDetails: (details) {
-            final index = _hoverIndex ?? _indexFor(details.offset.dx, visible);
+            final index = _hoverIndex ?? _indexFor(details.offset, visible);
             _setHover(null);
             _accept(details.data, index);
           },
@@ -104,8 +114,10 @@ class _ExpressionBoardState extends ConsumerState<ExpressionBoard> {
                 ),
                 boxShadow: [BoxShadow(color: p.backgroundDeep, offset: const Offset(0, 4))],
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                runSpacing: tile * 0.3,
                 children: _rowChildren(state, tile, spacing, errorId),
               ),
             );

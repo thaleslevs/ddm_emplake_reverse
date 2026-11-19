@@ -23,6 +23,7 @@ import 'game_texts.dart';
 import 'latex_preview.dart';
 import 'operator_palette.dart';
 import 'score_badge.dart';
+import 'solved_dialog.dart';
 import 'verdict_banner.dart';
 
 class GamePage extends ConsumerStatefulWidget {
@@ -46,6 +47,9 @@ class _GamePageState extends ConsumerState<GamePage> {
   ClownMood _mood = ClownMood.sad;
   int _reactions = 0;
 
+  /// O aviso de acerto está aberto: a expressão resolvida fica parada.
+  bool _celebrating = false;
+
   GameController get _controller => ref.read(gameControllerProvider(_level).notifier);
 
   @override
@@ -54,7 +58,7 @@ class _GamePageState extends ConsumerState<GamePage> {
     super.dispose();
   }
 
-  void _check() {
+  Future<void> _check() async {
     final state = ref.read(gameControllerProvider(_level));
     final verdict = _controller.check();
     ref.read(soundsProvider).play(verdict is Correct ? GameSound.correct : GameSound.wrong);
@@ -62,7 +66,16 @@ class _GamePageState extends ConsumerState<GamePage> {
       _mood = verdict is Correct ? ClownMood.happy : ClownMood.sad;
       _reactions++;
     });
-    if (verdict is Correct) _sendPiecesHome(state.board);
+    // Errado: nada muda na expressão, o jogador continua de onde parou.
+    if (verdict is! Correct) return;
+    final solved = ref.read(gameControllerProvider(_level)).solved;
+    if (solved != null) {
+      setState(() => _celebrating = true);
+      await showSolvedDialog(context, solved: solved, points: _level.points);
+      if (!mounted) return;
+      setState(() => _celebrating = false);
+    }
+    _sendPiecesHome(state.board);
   }
 
   void _sendPiecesHome(List<Token> board) {
@@ -102,7 +115,7 @@ class _GamePageState extends ConsumerState<GamePage> {
     final l10n = AppLocalizations.of(context);
     final p = GamePalette.of(context);
     final state = ref.watch(gameControllerProvider(_level));
-    final busy = _flights.isNotEmpty;
+    final busy = _flights.isNotEmpty || _celebrating;
     // "Blip" quando uma peça entra na expressão (na mesma rodada).
     ref.listen(gameControllerProvider(_level), (previous, next) {
       if (previous != null && next.round == previous.round && next.board.length > previous.board.length) {
@@ -155,19 +168,8 @@ class _GamePageState extends ConsumerState<GamePage> {
                           ExpressionBoard(key: ValueKey(_level), level: _level, keys: _keys),
                           const SizedBox(height: 12),
                           LatexPreview(latex: boardToLatex(state.board), emptyText: l10n.gamePreviewEmpty),
-                          const SizedBox(height: 16),
-                          Center(
-                            child: EqualsHolder(placed: state.equalsPlaced, keys: _keys, size: pieceSize),
-                          ),
-                          const SizedBox(height: 16),
-                          OperatorPalette(level: _level, keys: _keys, size: pieceSize),
-                          const SizedBox(height: 12),
-                          Text(
-                            l10n.gameRemoveHint,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.bodySmall!.copyWith(color: p.textMuted),
-                          ),
-                          const SizedBox(height: 24),
+                          const SizedBox(height: 14),
+                          // Verificar logo abaixo da expressão: sempre à vista.
                           Wrap(
                             alignment: WrapAlignment.center,
                             spacing: 12,
@@ -197,8 +199,20 @@ class _GamePageState extends ConsumerState<GamePage> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 12),
                           VerdictBanner(verdict: state.verdict, solved: state.solved),
+                          const SizedBox(height: 16),
+                          Center(
+                            child: EqualsHolder(placed: state.equalsPlaced, keys: _keys, size: pieceSize),
+                          ),
+                          const SizedBox(height: 16),
+                          OperatorPalette(level: _level, keys: _keys, size: pieceSize),
+                          const SizedBox(height: 12),
+                          Text(
+                            l10n.gameRemoveHint,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodySmall!.copyWith(color: p.textMuted),
+                          ),
                         ],
                       ),
                     ),

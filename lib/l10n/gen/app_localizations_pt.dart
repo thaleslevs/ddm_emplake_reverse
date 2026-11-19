@@ -462,6 +462,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get gameSkip => 'Pular';
 
   @override
+  String get gameNext => 'Próximo número';
+
+  @override
+  String get solvedDialogTitle => 'Acertou!';
+
+  @override
   String gameNumberLabel(String number) {
     return 'Número $number';
   }
